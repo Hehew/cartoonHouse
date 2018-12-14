@@ -1,0 +1,47 @@
+.search-condition{
+  width: 570rpx;
+  height: 50rpx;
+  background: #E3E3E7;
+  border-radius: 10rpx;
+  display: inline-block;
+  margin-left: 90rpx;
+  vertical-align: center;
+}
+.placeholder{
+  font-size: 30rpx;
+}
+.search-btn{
+  float: right;
+  padding: 8rpx 15rpx;
+  font-size: 30rpx;
+  vertical-align: center;
+}
+.hot-search{
+  float: left;
+  font-size: 20rpx;
+  color: #A0A0A0;
+  line-height: 60rpx;
+}
+.flush-image{
+  float: right;
+  width: 83rpx;
+  height: 68rpx;
+}
+.clearfix:after{
+  content: '.';
+  height: 0;
+  width: 0;
+  clear: both;
+  visibility: hidden;
+  display: block;
+}
+.to-book-detail{
+  font-size: 25rpx;
+  padding: 10rpx 15rpx;
+  display: inline-block;
+  background: #e3e3e7;
+  border-radius: 15px;
+  margin-right: 10rpx;
+  margin-bottom: 30rpx;
+  color: #1c1c1b;
+}
