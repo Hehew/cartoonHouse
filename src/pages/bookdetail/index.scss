@@ -1,0 +1,68 @@
+page{
+  height: 100%;
+  width: 100%;
+}
+.container{
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.all-page{
+  position: absolute;
+  bottom: 80px;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.book-item-main-image{
+  width: 210px;
+  height: 120px;
+  float: left;
+}
+.book-item-one-page{
+  padding: 15px 20px;
+  border-bottom: 2px solid #edecee;
+}
+.start-read{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #e7380c;
+  color: white;
+  font-size: 30px;
+}
+.page-num{
+  color: #141414;
+  font-size: 30px;
+}
+.page-time{
+  color: #838383;
+  font-size: 20px;
+}
+.little-image{
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.page-info{
+  padding: 20px 25px;
+  margin-left: 210px;
+}
+.fr{
+  float: right;
+}
+.page-time{
+  margin-top: 10px;
+}
+.clearfix:after{
+  content: '.';
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  clear: both;
+  display: block;
+}
+.vt{
+  vertical-align: top;
+}

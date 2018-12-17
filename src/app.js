@@ -14,9 +14,11 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/ifind/index',
       'pages/currentweek/index',
+      'pages/ifind/index',
       'pages/onlyme/index',
+      'pages/morebook/index',
+      'pages/bookdetail/index'
     ],
     window: {
       backgroundTextStyle: 'light',

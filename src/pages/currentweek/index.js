@@ -39,12 +39,18 @@ class CurrentWeek extends Component {
 
   componentDidHide () { }
 
+  toMore(){
+    Taro.navigateTo({
+      url: '../morebook/index?id=1'
+    })
+  }
+
   render () {
     return (
       <View>
         <View style={{paddingRight: '25rpx'}}>
           <Image src={Tuijian} className='current-week-title' />
-          <Text className='more'>更多 &gt;</Text>
+          <Text className='more' onClick={this.toMore}>更多 &gt;</Text>
         </View>
         <View>
           <BookItem className='book-item-bg no-margin-left' imageSrc={c1} describes={['听说这个系列的男主都开挂了']} bookTitle='斗罗大陆' />
