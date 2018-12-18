@@ -10,7 +10,13 @@ import image3 from '../../images/myimages/3.png'
 
 export default class OnlyMe extends Component{
   config = {
+    navigationBarTitleText: "独家"
+  }
 
+  toMore(){
+    Taro.navigateTo({
+      url: '../morebook/index?id=1'
+    })
   }
 
   render(){
@@ -18,7 +24,7 @@ export default class OnlyMe extends Component{
       <View>
         <View style={{paddingRight: '25rpx', height: '84rpx'}}>
           <Image className='bookcity-title' src={title} />
-          <Text className='more'>更多 &gt;</Text>
+          <Text className='more' onClick={this.toMore}>更多 &gt;</Text>
         </View>
         <View>
           <Image src={image0} className='image-main' />

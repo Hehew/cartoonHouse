@@ -10,7 +10,7 @@ page{
 .all-page{
   position: absolute;
   bottom: 80px;
-  top: 0;
+  top: 50px;
   left: 0;
   right: 0;
 }
@@ -53,7 +53,7 @@ page{
   float: right;
 }
 .page-time{
-  margin-top: 10px;
+  margin-top: 30px;
 }
 .clearfix:after{
   content: '.';
@@ -65,4 +65,44 @@ page{
 }
 .vt{
   vertical-align: top;
+}
+.page-all-set{
+  position: relative;
+  top: -2px;
+  z-index: 99;
+  background: #f4f4f4;
+  padding: 20px 20px;
+  font-size: 20px;
+  white-space: nowrap;
+  overflow: scroll;
+}
+.page-set:first-child{
+  margin-left: 0;
+}
+.page-set{
+  display: inline-block;
+  padding: 10px 35px;
+  background: white;
+  margin-left: 30px;
+  color: #4b4b4b;
+}
+.select-page-container{
+  padding-right: 20px;
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+  border-bottom: 2px solid #f4f4f4;
+}
+.select-page{
+  font-size: 20px;
+  color: #666666;
+  margin-right: 10px;
+}
+.select-image{
+  width: 20px;
+  height: 20px;
+}
+.select-page-main{
+  float: right;
+  height: 100%;
 }

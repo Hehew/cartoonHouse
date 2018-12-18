@@ -26,7 +26,7 @@ import c2 from '../../images/myimages/c2.png'
 class CurrentWeek extends Component {
 
   config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '本周'
   }
 
   componentWillReceiveProps (nextProps) {
@@ -48,7 +48,7 @@ class CurrentWeek extends Component {
   render () {
     return (
       <View>
-        <View style={{paddingRight: '25rpx'}}>
+        <View style={{paddingRight: '25rpx',height: '84rpx'}}>
           <Image src={Tuijian} className='current-week-title' />
           <Text className='more' onClick={this.toMore}>更多 &gt;</Text>
         </View>

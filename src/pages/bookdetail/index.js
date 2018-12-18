@@ -3,15 +3,40 @@ import { View, Text, Image, ScrollView, Button} from '@tarojs/components'
 import './index.scss'
 import main from '../../images/myimages/main.png'
 import Zan from '../../images/myimages/zan.png';
+import select from '../../images/myimages/select.png';
 
 export default class BookDetail extends Component{
-  config = {
-
+  state = {
+    pageSelect: false
   }
-
+  config = {
+    navigationBarTitleText: "详情"
+  }
+  changePageSelect(){
+    this.setState({
+      pageSelect: !this.state.pageSelect
+    });
+  }
   render() {
     return (
       <View className='container'>
+        <View className='select-page-container clearfix'>
+          <View className='select-page-main' onClick={this.changePageSelect}>
+            <Text className='select-page'>选集</Text>
+            <Image src={select} className='select-image' />
+          </View>
+        </View>
+        { this.state.pageSelect ?
+          <View className='page-all-set'>
+            <View className='page-set'>1-50</View>
+            <View className='page-set'>51-100</View>
+            <View className='page-set'>51-100</View>
+            <View className='page-set'>51-100</View>
+            <View className='page-set'>51-100</View>
+            <View className='page-set'>51-100</View>
+            <View className='page-set'>51-100</View>
+          </View> : ''
+        }
         <ScrollView className='all-page' scrollY='true' >
           <View className='book-item-one-page'>
             <Image src={main} className='book-item-main-image' />
@@ -172,17 +197,11 @@ export default class BookDetail extends Component{
             </View>
           </View>
         </View>
-
-
-
-
-
-
-        </ScrollView>
-        <Button className='start-read'>
-          开始阅读
-        </Button>
-      </View>
+      </ScrollView>
+      <Button className='start-read'>
+        开始阅读
+      </Button>
+    </View>
     )
   }
 }

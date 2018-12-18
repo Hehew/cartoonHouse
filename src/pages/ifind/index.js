@@ -5,13 +5,13 @@ import flush from '../../images/myimages/flush.png'
 
 export default class Ifind extends Component{
   config = {
-
+    navigationBarTitleText: "搜索"
   }
 
   render(){
     return(
       <View>
-        <View style={{borderBottom: '5rpx solid #e3e3e7'}}>
+        <View style={{borderBottom: '5rpx solid #e3e3e7',paddingTop: '10px'}}>
           <Input cursor='5' placeholderClass='placeholder' className='search-condition' placeholder='输入您想查找的漫画' confirmType='search' />
           <Text className='search-btn'>搜索</Text>
         </View>
