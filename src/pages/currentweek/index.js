@@ -6,9 +6,6 @@ import { add, minus, asyncAdd } from '../../actions/counter'
 import './index.scss'
 import Tuijian from '../../images/myimages/tuijian.png'
 import BookItem from '../item'
-import c1 from '../../images/myimages/c1.png'
-import c2 from '../../images/myimages/c2.png'
-
 
 @connect(({ counter }) => ({
   counter
@@ -24,6 +21,9 @@ import c2 from '../../images/myimages/c2.png'
   }
 }))
 class CurrentWeek extends Component {
+  state = {
+    data: []
+  }
 
   config = {
     navigationBarTitleText: '本周'
@@ -38,8 +38,12 @@ class CurrentWeek extends Component {
   }
 
   componentDidShow () {
+   this.getCurrentWeekData()
+  }
+
+  getCurrentWeekData(){
     Taro.request({
-      url: 'http://www.hew.ac.cn:8080/bg/current_week',
+      url: 'https://www.hew.ac.cn/bg/current_week',
       method: 'get',
       success: (res)=>{
         this.setState({
@@ -65,10 +69,18 @@ class CurrentWeek extends Component {
           <Text className='more' onClick={this.toMore}>更多 &gt;</Text>
         </View>
         <View>
-          <BookItem className='book-item-bg no-margin-left' imageSrc={c1} describes={['听说这个系列的男主都开挂了']} bookTitle='斗罗大陆' />
-          <BookItem className='book-item-bg' imageSrc={c2} describes={['神秘面具竟招来桃花运']} bookTitle='都市花丛逍遥游' />
+          {
+            this.state.data.slice(0, 6).map((item, index)=>{
+              return <BookItem key={index}
+                               pageUrl={item.detail_url}
+                               className={index % 2 === 0 ?  'book-item-bg no-margin-left' : 'book-item-bg'}
+                               imageSrc={item.imageSrc}
+                               describes={item.label.split('/')}
+                               bookTitle={item.title}/>
+            })
+
+          }
         </View>
-        {this.state.data}
       </View>
     )
   }

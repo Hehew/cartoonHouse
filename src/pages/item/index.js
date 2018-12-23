@@ -4,11 +4,11 @@ import './index.scss'
 
 export default class BookItem extends Component{
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    // console.log(this.props, nextProps)
   }
   toDetail(){
     Taro.navigateTo({
-      url: '../bookdetail/index?id=1'
+      url: '../bookdetail/index?detail_url=' + this.props.pageUrl
     })
   }
   render(){

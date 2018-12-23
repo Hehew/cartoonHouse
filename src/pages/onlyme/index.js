@@ -13,6 +13,24 @@ export default class OnlyMe extends Component{
     navigationBarTitleText: "独家"
   }
 
+  state = {
+    data: [{}]
+  }
+  componentDidShow () {
+    this.getOnlyMeData()
+  }
+  getOnlyMeData(){
+    Taro.request({
+      url: 'https://www.hew.ac.cn/bg/only_me',
+      method: 'get',
+      success: (res)=>{
+        this.setState({
+          data: res.data
+        })
+      }
+    })
+  }
+
   toMore(){
     Taro.navigateTo({
       url: '../morebook/index?id=1'
@@ -27,19 +45,25 @@ export default class OnlyMe extends Component{
           <Text className='more' onClick={this.toMore}>更多 &gt;</Text>
         </View>
         <View>
-          <Image src={image0} className='image-main' />
+          <Image pageUrl={this.state.data[0].detail_url} src={this.state.data[0].imageSrc} className='image-main' />
           <View style={{paddingLeft: '20rpx', paddingBottom: '10rpx' }}>
             <View>
-              <Text className='book-main-title'>星辰变</Text>
+              <Text className='book-main-title'>{this.state.data[0].title}</Text>
             </View>
             <View>
-              <Text className='sub-title'>光芒中羽化成神仙</Text>
+              <Text className='sub-title'>{this.state.data[0].label}</Text>
             </View>
           </View>
           <View>
-            <BookItem className='book-item no-margin-left' imageSrc={image1} describes={['休仙', '少年', '热血']} bookTitle='最强神兽系统' />
-            <BookItem className='book-item' imageSrc={image2} describes={['少年', '热血', '玄幻']} bookTitle='封鬼传说' />
-            <BookItem className='book-item' imageSrc={image3} describes={['奇幻']} bookTitle='天生外卖员' />
+            {
+              this.state.data.slice(1, 7).map((item, index)=>{
+                return <BookItem key={index}
+                                 className={index % 3 === 0 ? 'book-item no-margin-left' : 'book-item'}
+                                 imageSrc={item.imageSrc}
+                                 describes={item.label.split('/')}
+                                 bookTitle={item.title} />
+              })
+            }
           </View>
         </View>
       </View>

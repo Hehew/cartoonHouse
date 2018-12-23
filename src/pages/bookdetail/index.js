@@ -7,17 +7,51 @@ import select from '../../images/myimages/select.png';
 
 export default class BookDetail extends Component{
   state = {
-    pageSelect: false
+    pageSelect: false,
+    pageList: []
   }
   config = {
     navigationBarTitleText: "详情"
   }
+
+  componentWillMount(){
+    let detail_url = this.$router.params.detail_url
+    this.getPageDetail(detail_url)
+  }
+
+  getPageDetail(url){
+    Taro.request({
+      url: 'https://www.hew.ac.cn/bg/get_info?detail_url=' + url,
+      method: 'get',
+      success: (res)=>{
+        this.setState({
+          pageList: res.data
+        })
+      }
+    })
+  }
+
   changePageSelect(){
     this.setState({
       pageSelect: !this.state.pageSelect
     });
   }
   render() {
+    let getPageSet = ()=>{
+      let setNum;
+      let length = this.state.pageList.length;
+      if(length % 50 === 0){
+        setNum = Math.floor(length / 50);
+      }else{
+        setNum = Math.floor(length / 50) + 1;
+      }
+      let pageSet = [];
+      for(let i = 0; i < setNum;i++){
+        pageSet.push(i === (setNum -1) ? ((i * 50 + 1) + '-' + length) : ((i * 50 + 1) + '-' + (i * 50)))
+      }
+      return pageSet;
+    }
+
     return (
       <View className='container'>
         <View className='select-page-container clearfix'>
@@ -28,13 +62,11 @@ export default class BookDetail extends Component{
         </View>
         { this.state.pageSelect ?
           <View className='page-all-set'>
-            <View className='page-set'>1-50</View>
-            <View className='page-set'>51-100</View>
-            <View className='page-set'>51-100</View>
-            <View className='page-set'>51-100</View>
-            <View className='page-set'>51-100</View>
-            <View className='page-set'>51-100</View>
-            <View className='page-set'>51-100</View>
+            {
+              getPageSet().map((item, index)=>{
+                return <View className='page-set' key={index}>{item}</View>
+              })
+            }
           </View> : ''
         }
         <ScrollView className='all-page' scrollY='true' >

@@ -4,10 +4,27 @@ import './index.scss'
 import flush from '../../images/myimages/flush.png'
 
 export default class Ifind extends Component{
+  state = {
+    hostList: []
+  }
   config = {
     navigationBarTitleText: "搜索"
   }
 
+  componentDidShow(){
+    this.getHotList();
+  }
+  getHotList(){
+    Taro.request({
+      url: 'https://www.hew.ac.cn/bg/hot_list',
+      method: 'get',
+      success: (res)=>{
+        this.setState({
+          hostList: res.data
+        })
+      }
+    })
+  }
   render(){
     return(
       <View>
@@ -21,11 +38,13 @@ export default class Ifind extends Component{
             <Image className='flush-image' src={flush} />
           </View>
           <View style={{paddingLeft: '15rpx'}}>
-            <View className='to-book-detail'>人体碎片</View>
-            <View className='to-book-detail'>牛书供应商</View>
-            <View className='to-book-detail'>傲世九重天</View>
-            <View className='to-book-detail'>天价萌妹</View>
-            <View className='to-book-detail'>原来我很爱你</View>
+            {
+              this.state.hostList.slice(0, 20).map((item, index)=>{
+                return <View key={index}
+                             pageUrl={item.detail_url}
+                             className='to-book-detail'>{item.title}</View>
+              })
+            }
           </View>
         </View>
       </View>
