@@ -33,9 +33,21 @@ class CurrentWeek extends Component {
     console.log(this.props, nextProps)
   }
 
-  componentWillUnmount () { }
+  componentWillUnmount () {
 
-  componentDidShow () { }
+  }
+
+  componentDidShow () {
+    Taro.request({
+      url: 'http://www.hew.ac.cn:8080/bg/current_week',
+      method: 'get',
+      success: (res)=>{
+        this.setState({
+          data: res.data
+        })
+      }
+    })
+  }
 
   componentDidHide () { }
 
@@ -56,6 +68,7 @@ class CurrentWeek extends Component {
           <BookItem className='book-item-bg no-margin-left' imageSrc={c1} describes={['听说这个系列的男主都开挂了']} bookTitle='斗罗大陆' />
           <BookItem className='book-item-bg' imageSrc={c2} describes={['神秘面具竟招来桃花运']} bookTitle='都市花丛逍遥游' />
         </View>
+        {this.state.data}
       </View>
     )
   }
