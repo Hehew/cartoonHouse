@@ -2,7 +2,7 @@ https://www.hew.ac.cn/bg/current_week
 https://www.hew.ac.cn/bg/only_me
 https://www.hew.ac.cn/bg/hot_list
 https://www.hew.ac.cn/bg/search_for_keyword?keyword=雏蜂
-https://www.hew.ac.cn/bg/get_info?detail_url=http://www.u17.com/comic/3166.html
+https://www.hew.ac.cn/bg/get_info?detail_url=http://www.u17.com/comic/3166.html --还得加时间和章节的第一张图片
 https://www.hew.ac.cn/bg/get_page_detail?id=632757
 https://www.hew.ac.cn/v1/   --封面图片
 https://www.hew.ac.cn/v2/   --内容图片

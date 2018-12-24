@@ -11,21 +11,38 @@ export default class MoreBook extends Component{
     navigationBarTitleText: "全部"
   }
 
+  state = {
+    dataList: []
+  }
+
+  componentWillMount(){
+    let keyword = this.$router.params.keyword
+    if(keyword){
+      Taro.request({
+        url: 'https://www.hew.ac.cn/bg/search_for_keyword?keyword=' + keyword,
+        method: 'get',
+        success: (res)=>{
+          this.setState({
+            dataList: res.data
+          })
+        }
+      })
+    }
+  }
+
   render(){
     return(
       <View style={{paddingTop: '10rpx'}}>
-        <BookItem className='book-item no-margin-left' imageSrc={image1} describes={['休仙', '少年', '热血']} bookTitle='最强神兽系统' />
-        <BookItem className='book-item' imageSrc={image2} describes={['少年', '热血', '玄幻']} bookTitle='封鬼传说' />
-        <BookItem className='book-item' imageSrc={image3} describes={['奇幻']} bookTitle='天生外卖员' />
-        <BookItem className='book-item no-margin-left' imageSrc={image1} describes={['休仙', '少年', '热血']} bookTitle='最强神兽系统' />
-        <BookItem className='book-item' imageSrc={image2} describes={['少年', '热血', '玄幻']} bookTitle='封鬼传说' />
-        <BookItem className='book-item' imageSrc={image3} describes={['奇幻']} bookTitle='天生外卖员' />
-        <BookItem className='book-item no-margin-left' imageSrc={image1} describes={['休仙', '少年', '热血']} bookTitle='最强神兽系统' />
-        <BookItem className='book-item' imageSrc={image2} describes={['少年', '热血', '玄幻']} bookTitle='封鬼传说' />
-        <BookItem className='book-item' imageSrc={image3} describes={['奇幻']} bookTitle='天生外卖员' />
-        <BookItem className='book-item no-margin-left' imageSrc={image1} describes={['休仙', '少年', '热血']} bookTitle='最强神兽系统' />
-        <BookItem className='book-item' imageSrc={image2} describes={['少年', '热血', '玄幻']} bookTitle='封鬼传说' />
-        <BookItem className='book-item' imageSrc={image3} describes={['奇幻']} bookTitle='天生外卖员' />
+        {
+          this.state.dataList.map((item, index)=>{
+            return <BookItem className={index % 3 === 0 ? 'book-item no-margin-left' : 'book-item'}
+                             imageSrc={item.imageSrc}
+                             describes={item.label.split('/').slice(0, 3)}
+                             bookTitle={item.title.length > 5 ? item.title.substr(0, 5) + '...' : item.title}
+                             key={index}
+                             pageUrl={item.detail_url}/>
+          })
+        }
       </View>
     )
   }

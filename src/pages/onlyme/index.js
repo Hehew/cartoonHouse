@@ -31,9 +31,15 @@ export default class OnlyMe extends Component{
     })
   }
 
+  toDetail(event){
+    Taro.navigateTo({
+      url: '../bookdetail/index?detail_url=' + event.currentTarget.dataset.pageUrl
+    })
+  }
+
   toMore(){
     Taro.navigateTo({
-      url: '../morebook/index?id=1'
+      url: '../morebook/index'
     })
   }
 
@@ -45,7 +51,7 @@ export default class OnlyMe extends Component{
           <Text className='more' onClick={this.toMore}>更多 &gt;</Text>
         </View>
         <View>
-          <Image pageUrl={this.state.data[0].detail_url} src={this.state.data[0].imageSrc} className='image-main' />
+          <Image onClick={this.toDetail} dataPageUrl={this.state.data[0].detail_url} src={this.state.data[0].imageSrc} className='image-main' />
           <View style={{paddingLeft: '20rpx', paddingBottom: '10rpx' }}>
             <View>
               <Text className='book-main-title'>{this.state.data[0].title}</Text>

@@ -57,7 +57,7 @@ class CurrentWeek extends Component {
 
   toMore(){
     Taro.navigateTo({
-      url: '../morebook/index?id=1'
+      url: '../morebook/index'
     })
   }
 

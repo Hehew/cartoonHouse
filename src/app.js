@@ -18,7 +18,8 @@ class App extends Component {
       'pages/ifind/index',
       'pages/onlyme/index',
       'pages/morebook/index',
-      'pages/bookdetail/index'
+      'pages/bookdetail/index',
+      'pages/bookimages/index'
     ],
     window: {
       backgroundTextStyle: 'light',
