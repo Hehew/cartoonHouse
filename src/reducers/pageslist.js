@@ -1,6 +1,5 @@
-import {ADD, MINUS} from "../constants/counter";
-
 const INITIAL_STATE = {
+  pages_list: []
 }
 
 export default function counter (state = INITIAL_STATE, action) {
@@ -9,6 +8,11 @@ export default function counter (state = INITIAL_STATE, action) {
       return {
         ...state,
         pages_list: action.value
+      }
+    case 'setPageDetail':
+      return {
+        ...state,
+        pageDetail: action.value
       }
     default:
       return state

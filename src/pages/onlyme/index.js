@@ -3,12 +3,19 @@ import { View, Text, Image } from '@tarojs/components'
 import './index.scss'
 import title from '../../images/myimages/dujiashoufa.png'
 import BookItem from '../item'
-import image0 from '../../images/myimages/0.png'
-import image1 from '../../images/myimages/1.png'
-import image2 from '../../images/myimages/2.png'
-import image3 from '../../images/myimages/3.png'
+import { connect } from '@tarojs/redux'
+import  { replace } from '../../actions/pages_list'
 
-export default class OnlyMe extends Component{
+@connect((state)=>{
+  return {
+    ...state
+  }
+}, (dispatch) => ({
+  replace(value){
+    dispatch(replace(value));
+  }
+}))
+class OnlyMe extends Component{
   config = {
     navigationBarTitleText: "独家"
   }
@@ -16,7 +23,7 @@ export default class OnlyMe extends Component{
   state = {
     data: [{}]
   }
-  componentDidShow () {
+  componentWillMount () {
     this.getOnlyMeData()
   }
   getOnlyMeData(){
@@ -33,11 +40,13 @@ export default class OnlyMe extends Component{
 
   toDetail(event){
     Taro.navigateTo({
-      url: '../bookdetail/index?detail_url=' + event.currentTarget.dataset.pageUrl
+      url: '../bookdetail/index?detail_url=' + event.currentTarget.dataset.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl
     })
   }
 
   toMore(){
+    let { replace } = this.props;
+    replace(this.state.data);
     Taro.navigateTo({
       url: '../morebook/index'
     })
@@ -51,7 +60,7 @@ export default class OnlyMe extends Component{
           <Text className='more' onClick={this.toMore}>更多 &gt;</Text>
         </View>
         <View>
-          <Image onClick={this.toDetail} dataPageUrl={this.state.data[0].detail_url} src={this.state.data[0].imageSrc} className='image-main' />
+          <Image onClick={this.toDetail} dataCoverUrl={this.state.data[0].imageSrc} dataPageUrl={this.state.data[0].detail_url} src={this.state.data[0].imageSrc} className='image-main' />
           <View style={{paddingLeft: '20rpx', paddingBottom: '10rpx' }}>
             <View>
               <Text className='book-main-title'>{this.state.data[0].title}</Text>
@@ -65,9 +74,10 @@ export default class OnlyMe extends Component{
               this.state.data.slice(1, 7).map((item, index)=>{
                 return <BookItem key={index}
                                  className={index % 3 === 0 ? 'book-item no-margin-left' : 'book-item'}
+                                 pageUrl={item.detail_url}
                                  imageSrc={item.imageSrc}
-                                 describes={item.label.split('/')}
-                                 bookTitle={item.title} />
+                                 describes={item.label.split('/').slice(0, 3)}
+                                 bookTitle={item.title.length > 5 ? item.title.substr(0, 5) + '...' : item.title} />
               })
             }
           </View>
@@ -76,3 +86,5 @@ export default class OnlyMe extends Component{
     )
   }
 }
+
+export default OnlyMe

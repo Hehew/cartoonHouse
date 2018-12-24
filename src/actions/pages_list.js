@@ -1,6 +1,14 @@
 
-export const replace = () => {
+export const replace = (value) => {
   return {
-    type: 'replace'
+    type: 'replace',
+    value
+  }
+}
+
+export const setPageDetail = (value) => {
+  return {
+    type: 'setPageDetail',
+    value
   }
 }

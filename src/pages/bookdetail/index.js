@@ -1,22 +1,39 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView, Button} from '@tarojs/components'
 import './index.scss'
-import main from '../../images/myimages/main.png'
 import page_num from '../../images/myimages/page_num.png';
 import select from '../../images/myimages/select.png';
+import Mark from '../../images/icon/mark.png'
+import Nomark from '../../images/icon/nomark.png'
+import { connect } from '@tarojs/redux'
 
-export default class BookDetail extends Component{
+@connect((state)=>{
+  return {
+    ...state
+  }
+})
+class BookDetail extends Component{
   state = {
     pageSelect: false,
     pageList: [],
-    pageSelectList: []
+    pageSelectList: [],
+    pageSelectShowList: [],
+    markIds: []
   }
   config = {
     navigationBarTitleText: "详情"
   }
 
   componentWillMount(){
-    let detail_url = this.$router.params.detail_url
+    let detail_url = this.$router.params.detail_url;
+    let coverUrl = this.$router.params.coverUrl;
+    this.setState({
+      coverUrl
+    });
+    console.log('---', Taro.getStorageSync('markIds') || []);
+    this.setState({
+      markIds: Taro.getStorageSync('markIds') || []
+    });
     this.getPageDetail(detail_url)
   }
 
@@ -25,9 +42,14 @@ export default class BookDetail extends Component{
       url: 'https://www.hew.ac.cn/bg/get_info?detail_url=' + url,
       method: 'get',
       success: (res)=>{
+        let max_page_num = Math.ceil(res.data.length / 10);
         this.setState({
           pageList: res.data,
-          pageSelectList: res.data
+          pageSelectList: res.data,
+          current_page: 1,
+          max_page_num,
+          pageSelectShowList: res.data.slice(0, 10),
+          myid: url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
         })
       }
     })
@@ -38,13 +60,22 @@ export default class BookDetail extends Component{
     let indexes;
     if(item){
       indexes = item.split('-')
+      let pageSelectList = this.state.pageList.slice(indexes[0] - 1, indexes[1]);
+      let max_page_num = Math.ceil(pageSelectList.length / 10);
       this.setState({
-        pageSelectList: this.state.pageList.slice(indexes[0] - 1, indexes[1]),
+        pageSelectList,
+        pageSelectShowList: pageSelectList.slice(0, 10),
+        current_page: 1,
+        max_page_num,
         pageSelect: false
       })
     }else{
+      let max_page_num = Math.ceil(this.state.pageList.length / 10);
       this.setState({
         pageSelectList: this.state.pageList,
+        pageSelectShowList: this.state.pageList.slice(0, 10),
+        current_page: 1,
+        max_page_num,
         pageSelect: false
       })
     }
@@ -70,6 +101,69 @@ export default class BookDetail extends Component{
     })
   }
 
+  cancelMark(){
+    const marks = Taro.getStorageSync('marks');
+    const markIds = this.state.markIds;
+    const index = markIds.indexOf(this.state.myid);
+    markIds.splice(index, 1)
+    marks.splice(index, 1)
+    Taro.setStorageSync('marks', marks);
+    Taro.setStorageSync('markIds', markIds);
+    this.setState({
+      markIds: markIds
+    })
+    Taro.showToast({
+      title: '取消收藏',
+      icon: 'success',
+      duration: 1000
+    });
+  }
+
+  mark(){
+    const marks = Taro.getStorageSync('marks');
+    const markIds = this.state.markIds;
+    if(marks){
+      let currentDetail = this.props.pageslist.pageDetail;
+      marks.push(currentDetail);
+      markIds.push(this.state.myid)
+      Taro.setStorageSync('marks', marks);
+      Taro.setStorageSync('markIds', markIds);
+      this.setState({
+        markIds: markIds
+      })
+    }else{
+      Taro.setStorageSync('marks', [this.props.pageslist.pageDetail]);
+      Taro.setStorageSync('markIds', [this.state.myid]);
+      this.setState({
+        markIds: [this.state.myid]
+      })
+    }
+    Taro.showToast({
+      title: '收藏成功',
+      icon: 'success',
+      duration: 1000
+    });
+  }
+
+  getMoreDetail(){
+    let current_page = this.state.current_page;
+    let page_max_num = this.state.max_page_num;
+    let length = this.state.pageSelectList.length;
+    if(current_page < page_max_num){
+      if(current_page === page_max_num - 1){
+        this.setState({
+          pageSelectShowList: this.state.pageSelectShowList.concat(this.state.pageSelectList.slice(current_page * 10, length)),
+          current_page: current_page + 1
+        })
+      }else{
+        this.setState({
+          pageSelectShowList: this.state.pageSelectShowList.concat(this.state.pageSelectList.slice(current_page * 10, current_page * 10 + 10)),
+          current_page: current_page + 1
+        })
+      }
+    }
+  }
+
   render() {
     let getPageSet = ()=>{
       let setNum;
@@ -89,6 +183,12 @@ export default class BookDetail extends Component{
     return (
       <View className='container'>
         <View className='select-page-container clearfix'>
+          {
+            this.state.markIds.indexOf(this.state.myid) === -1 ?
+              <Image src={Nomark} className='mark' onClick={this.mark}/>:
+              <Image src={ Mark } className='mark' onClick={this.cancelMark}/>
+
+          }
           <View className='select-page-main' onClick={this.changePageSelect}>
             <Text className='select-page'>选集</Text>
             <Image src={select} className='select-image' />
@@ -103,17 +203,17 @@ export default class BookDetail extends Component{
             }
           </View> : ''
         }
-        <ScrollView className='all-page' scrollY='true' >
+        <ScrollView className='all-page' scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreDetail}>
           {
-            this.state.pageSelectList.map((item, index)=>{
+            this.state.pageSelectShowList.map((item, index)=>{
               return  <View dataPageId={item.page_id} onClick={this.ToReadPage} className='book-item-one-page' key={index}>
-                <Image src={main} className='book-item-main-image' />
+                <Image src={this.state.coverUrl} className='book-item-main-image' />
                 <View className='page-info'>
                   <View className='page-num'>
-                    <Text>{item.title}</Text>
+                    <Text>{item.title.substring(0, item.title.length -11)}</Text>
                   </View>
                   <View className='page-time clearfix'>
-                    <Text className='vt'>03-21</Text>
+                    <Text className='vt'>{item.title.substring(item.title.length - 11)}</Text>
                     <View className='fr like'>
                       <Image src={page_num} className='little-image vt' />
                       <Text className='vt'>{item.image_num}</Text>
@@ -131,3 +231,5 @@ export default class BookDetail extends Component{
     )
   }
 }
+
+export default BookDetail

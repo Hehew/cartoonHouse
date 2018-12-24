@@ -11,13 +11,13 @@ export default class Ifind extends Component{
     navigationBarTitleText: "搜索"
   }
 
-  componentDidShow(){
+  componentWillMount(){
     this.getHotList();
   }
 
   toDetail(event){
     Taro.navigateTo({
-      url: '../bookdetail/index?detail_url=' + event.currentTarget.dataset.pageUrl
+      url: '../bookdetail/index?detail_url=' + event.currentTarget.dataset.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl
     })
   }
 
@@ -62,6 +62,7 @@ export default class Ifind extends Component{
                 return <View key={index}
                              dataPageUrl={item.detail_url}
                              className='to-book-detail'
+                             dataCoverUrl={item.imageSrc}
                              onClick={this.toDetail}>{item.title}</View>
               })
             }

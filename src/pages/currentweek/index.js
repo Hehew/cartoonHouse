@@ -1,24 +1,33 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button, Text, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { add, minus, asyncAdd } from '../../actions/counter'
+import  { replace } from '../../actions/pages_list'
 
 import './index.scss'
 import Tuijian from '../../images/myimages/tuijian.png'
 import BookItem from '../item'
 
-@connect(({ counter }) => ({
-  counter
-}), (dispatch) => ({
-  add () {
-    dispatch(add())
-  },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
+// @connect(({ counter }) => ({
+//   counter
+// }), (dispatch) => ({
+//   add () {
+//     dispatch(add())
+//   },
+//   dec () {
+//     dispatch(minus())
+//   },
+//   asyncAdd () {
+//     dispatch(asyncAdd())
+//   }
+// })
+@connect((state)=>{
+  return {
+    ...state
   }
+}, (dispatch) => ({
+    replace(value){
+      dispatch(replace(value));
+    }
 }))
 class CurrentWeek extends Component {
   state = {
@@ -33,11 +42,8 @@ class CurrentWeek extends Component {
     console.log(this.props, nextProps)
   }
 
-  componentWillUnmount () {
 
-  }
-
-  componentDidShow () {
+  componentWillMount () {
    this.getCurrentWeekData()
   }
 
@@ -53,9 +59,9 @@ class CurrentWeek extends Component {
     })
   }
 
-  componentDidHide () { }
-
   toMore(){
+    let { replace } = this.props;
+    replace(this.state.data);
     Taro.navigateTo({
       url: '../morebook/index'
     })
