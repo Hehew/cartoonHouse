@@ -19,7 +19,8 @@ class App extends Component {
       'pages/onlyme/index',
       'pages/morebook/index',
       'pages/bookdetail/index',
-      'pages/bookimages/index'
+      'pages/bookimages/index',
+      'pages/mycollections/index'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -48,6 +49,11 @@ class App extends Component {
           text: "自己找找",
           iconPath: "images/icon/me.png",
           selectedIconPath: "images/icon/me-active.png"
+        },{
+          pagePath: "pages/mycollections/index",
+          text: "我的收藏",
+          iconPath: "images/icon/collection.png",
+          selectedIconPath: "images/icon/collection-active.png"
         }
       ]
     }

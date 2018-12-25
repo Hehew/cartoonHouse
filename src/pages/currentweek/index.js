@@ -81,7 +81,7 @@ class CurrentWeek extends Component {
                                pageUrl={item.detail_url}
                                className={index % 2 === 0 ?  'book-item-bg no-margin-left' : 'book-item-bg'}
                                imageSrc={item.imageSrc}
-                               describes={item.label.split('/')}
+                               describes={item.label.split('/').slice(0, 3)}
                                bookTitle={item.title}/>
             })
 

@@ -2,8 +2,19 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Button, Text, Image, Input } from '@tarojs/components'
 import './index.scss'
 import flush from '../../images/myimages/flush.png'
+import { connect } from '@tarojs/redux'
+import {setPageDetail} from "../../actions/pages_list"
 
-export default class Ifind extends Component{
+@connect((state)=>{
+  return {
+    ...state
+  }
+}, (dispatch) => ({
+  setPageDetail(value){
+    dispatch(setPageDetail(value))
+  }
+}))
+class Ifind extends Component{
   state = {
     hostList: []
   }
@@ -16,8 +27,12 @@ export default class Ifind extends Component{
   }
 
   toDetail(event){
+    let {setPageDetail} = this.props;
+    let item = event.currentTarget.dataset.item;
+    item.describes = item.label.split('/');
+    setPageDetail(item);
     Taro.navigateTo({
-      url: '../bookdetail/index?detail_url=' + event.currentTarget.dataset.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl
+      url: '../bookdetail/index?detail_url=' + item.detail_url + '&coverUrl=' + item.imageSrc
     })
   }
 
@@ -60,9 +75,8 @@ export default class Ifind extends Component{
             {
               this.state.hostList.slice(0, 20).map((item, index)=>{
                 return <View key={index}
-                             dataPageUrl={item.detail_url}
                              className='to-book-detail'
-                             dataCoverUrl={item.imageSrc}
+                             dataItem={item}
                              onClick={this.toDetail}>{item.title}</View>
               })
             }
@@ -72,3 +86,5 @@ export default class Ifind extends Component{
     )
   }
 }
+
+export default Ifind

@@ -4,7 +4,7 @@ import './index.scss'
 import title from '../../images/myimages/dujiashoufa.png'
 import BookItem from '../item'
 import { connect } from '@tarojs/redux'
-import  { replace } from '../../actions/pages_list'
+import {replace, setPageDetail} from '../../actions/pages_list'
 
 @connect((state)=>{
   return {
@@ -13,6 +13,9 @@ import  { replace } from '../../actions/pages_list'
 }, (dispatch) => ({
   replace(value){
     dispatch(replace(value));
+  },
+  setPageDetail(value){
+    dispatch(setPageDetail(value))
   }
 }))
 class OnlyMe extends Component{
@@ -39,6 +42,14 @@ class OnlyMe extends Component{
   }
 
   toDetail(event){
+    let {setPageDetail} = this.props;
+    let item = {
+      title: this.state.data[0].title,
+      imageSrc: this.state.data[0].imageSrc,
+      describes: this.state.data[0].label.split('/'),
+      detail_url: this.state.data[0].detail_url
+    }
+    setPageDetail(item);
     Taro.navigateTo({
       url: '../bookdetail/index?detail_url=' + event.currentTarget.dataset.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl
     })

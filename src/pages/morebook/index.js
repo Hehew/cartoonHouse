@@ -54,6 +54,15 @@ class MoreBook extends Component{
       let keyword = this.$router.params.keyword
       if(this.state.current_page < this.state.page_max_num){
         this.getDataList(keyword, this.state.current_page + 1);
+      }else{
+        let dataList = this.state.dataList;
+        if(dataList[dataList.length - 1] === '加载完成'){
+          return;
+        }
+        dataList.push('加载完成');
+        this.setState({
+          dataList: dataList
+        })
       }
     }else{
       let current_page = this.state.current_page;
@@ -71,6 +80,15 @@ class MoreBook extends Component{
             current_page: current_page + 1
           })
         }
+      }else{
+        let dataList = this.state.dataList;
+        if(dataList[dataList.length - 1] === '加载完成'){
+          return;
+        }
+        dataList.push('加载完成');
+        this.setState({
+          dataList: dataList
+        })
       }
     }
   }
@@ -81,10 +99,10 @@ class MoreBook extends Component{
         {
           this.state.dataList.length !== 0 ?
           this.state.dataList.map((item, index)=>{
-            return <BookItem className={index % 3 === 0 ? 'book-item no-margin-left' : 'book-item'}
+            return item === '加载完成' ? <View className='end'>加载完成</View> : <BookItem className={index % 3 === 0 ? 'book-item no-margin-left' : 'book-item'}
                              imageSrc={item.imageSrc}
-                             describes={item.label.split('/').slice(0, 3)}
-                             bookTitle={item.title.length > 5 ? item.title.substr(0, 5) + '...' : item.title}
+                             describes={item.label && item.label.split('/').slice(0, 3)}
+                             bookTitle={item.title && item.title.length > 5 ? item.title.substr(0, 5) + '...' : item.title}
                              key={index}
                              pageUrl={item.detail_url}/>
           }) : <View className='no-data'>暂无数据</View>

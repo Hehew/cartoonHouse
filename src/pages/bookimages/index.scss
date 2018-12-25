@@ -2,3 +2,21 @@
   width: 750px;
   height: 1000px;
 }
+.no-data{
+  height: calc(100vh - 5px);
+  text-align: center;
+  font-size: 30px;
+  color: #7f7f7f;
+  padding-top: 10px;
+}
+.end{
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  font-size: 30px;
+  color: #7f7f7f;
+  font-weight: bold;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+

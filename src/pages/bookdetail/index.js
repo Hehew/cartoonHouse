@@ -30,7 +30,6 @@ class BookDetail extends Component{
     this.setState({
       coverUrl
     });
-    console.log('---', Taro.getStorageSync('markIds') || []);
     this.setState({
       markIds: Taro.getStorageSync('markIds') || []
     });
@@ -161,6 +160,16 @@ class BookDetail extends Component{
           current_page: current_page + 1
         })
       }
+    }else{
+      let pageSelectShowList = this.state.pageSelectShowList;
+      if(pageSelectShowList[pageSelectShowList.length - 1] === '加载完成'){
+        return;
+      }
+      pageSelectShowList.push('加载完成');
+      console.log(pageSelectShowList);
+      this.setState({
+        pageSelectShowList: pageSelectShowList
+      })
     }
   }
 
@@ -206,21 +215,22 @@ class BookDetail extends Component{
         <ScrollView className='all-page' scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreDetail}>
           {
             this.state.pageSelectShowList.map((item, index)=>{
-              return  <View dataPageId={item.page_id} onClick={this.ToReadPage} className='book-item-one-page' key={index}>
-                <Image src={this.state.coverUrl} className='book-item-main-image' />
-                <View className='page-info'>
-                  <View className='page-num'>
-                    <Text>{item.title.substring(0, item.title.length -11)}</Text>
-                  </View>
-                  <View className='page-time clearfix'>
-                    <Text className='vt'>{item.title.substring(item.title.length - 11)}</Text>
-                    <View className='fr like'>
-                      <Image src={page_num} className='little-image vt' />
-                      <Text className='vt'>{item.image_num}</Text>
+              return  item === '加载完成' ? <View className='end'>加载完成</View> :
+                <View dataPageId={item.page_id} onClick={this.ToReadPage} className='book-item-one-page' key={index}>
+                  <Image src={this.state.coverUrl} className='book-item-main-image' />
+                  <View className='page-info'>
+                    <View className='page-num'>
+                      <Text>{item.title && item.title.substring(0, item.title.length -11)}</Text>
+                    </View>
+                    <View className='page-time clearfix'>
+                      <Text className='vt'>{item.title && item.title.substring(item.title.length - 11)}</Text>
+                      <View className='fr like'>
+                        <Image src={page_num} className='little-image vt' />
+                        <Text className='vt'>{item.image_num}</Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
             })
           }
       </ScrollView>
