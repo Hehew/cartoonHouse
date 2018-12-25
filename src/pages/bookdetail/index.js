@@ -5,7 +5,7 @@ import page_num from '../../images/myimages/page_num.png';
 import select from '../../images/myimages/select.png';
 import Mark from '../../images/icon/mark.png'
 import Nomark from '../../images/icon/nomark.png'
-import { connect } from '@tarojs/redux'
+import { connect } from '@tarojs/redux';
 
 @connect((state)=>{
   return {
@@ -166,7 +166,6 @@ class BookDetail extends Component{
         return;
       }
       pageSelectShowList.push('加载完成');
-      console.log(pageSelectShowList);
       this.setState({
         pageSelectShowList: pageSelectShowList
       })
@@ -243,3 +242,4 @@ class BookDetail extends Component{
 }
 
 export default BookDetail
+
