@@ -64,6 +64,14 @@ export default class BookImages extends Component{
 
           }) : <View className='no-data'>暂无数据</View>
         }
+        <View className='pre-' onClick={this.mark}>
+          <Image src={redStar} className='btn-icon'/>
+          上一话
+        </View>
+        <View className='start-read' onClick={this.beginRead}>
+          <Image src={read} className='btn-icon'/>
+          下一话
+        </View>
       </View>
     )
   }

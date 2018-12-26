@@ -27,15 +27,14 @@ class BookDetail extends Component{
   }
 
   componentWillMount(){
-    let detail_url = this.$router.params.detail_url;
+    let url = this.$router.params.detail_url;
     let coverUrl = this.$router.params.coverUrl;
     this.setState({
-      coverUrl
+      coverUrl,
+      markIds: Taro.getStorageSync('markIds') || [],
+      myid: url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
     });
-    this.setState({
-      markIds: Taro.getStorageSync('markIds') || []
-    });
-    this.getPageDetail(detail_url)
+    this.getPageDetail(url)
   }
 
   getPageDetail(url){
@@ -49,8 +48,7 @@ class BookDetail extends Component{
           pageSelectList: res.data,
           current_page: 1,
           max_page_num,
-          pageSelectShowList: res.data.slice(0, 10),
-          myid: url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
+          pageSelectShowList: res.data.slice(0, 10)
         })
       }
     })
@@ -239,14 +237,14 @@ class BookDetail extends Component{
             })
           }
       </ScrollView>
-      <Button className='collection' onClick={this.mark}>
+      <View className='collection' onClick={this.mark}>
         <Image src={redStar} className='btn-icon'/>
         {this.state.markIds.indexOf(this.state.myid) === -1 ? '我要收藏' : '取消收藏'}
-      </Button>
-      <Button className='start-read' onClick={this.beginRead}>
+      </View>
+      <View className='start-read' onClick={this.beginRead}>
         <Image src={read} className='btn-icon'/>
         开始阅读
-      </Button>
+      </View>
     </View>
     )
   }

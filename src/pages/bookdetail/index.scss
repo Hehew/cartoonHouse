@@ -23,16 +23,6 @@ page{
   padding: 15px 20px;
   border-bottom: 2px solid #edecee;
 }
-.start-read{
-  position: fixed;
-  bottom: 0;
-  left: 375px;
-  right: 0;
-  background: #e7380c;
-  color: white;
-  font-size: 30px;
-  border-radius: 0;
-}
 .page-num{
   color: #141414;
   font-size: 30px;
@@ -123,6 +113,7 @@ page{
   padding-bottom: 10px;
 }
 .collection{
+  border-radius: 0;
   line-height: 80px;
   position: fixed;
   bottom: 0;
@@ -131,8 +122,24 @@ page{
   background: white;
   color: #8B8B8B;
   font-size: 30px;
+  height: 80px;
+  border: none;
+  text-align: center;
+  box-sizing: border-box;
+  border-top: 1px solid #edecee;
+}
+.start-read{
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 375px;
+  right: 0;
+  background: #e7380c;
+  color: white;
+  font-size: 30px;
   border-radius: 0;
-  overflow: hidden;
+  height: 80px;
+  line-height: 80px;
 }
 .btn-icon{
   width: 40px;
