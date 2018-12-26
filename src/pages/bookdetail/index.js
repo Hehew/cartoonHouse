@@ -6,12 +6,17 @@ import select from '../../images/myimages/select.png';
 import { connect } from '@tarojs/redux';
 import redStar from '../../images/icon/red-start.png'
 import read from '../../images/icon/read.png'
+import { setPageDetailIds } from '../../actions/pages_list'
 
 @connect((state)=>{
   return {
     ...state
   }
-})
+},(dispatch) => ({
+  setPageDetailIds: (value)=>{
+    dispatch(setPageDetailIds(value))
+  }
+}))
 class BookDetail extends Component{
   state = {
     pageSelect: false,
@@ -38,6 +43,26 @@ class BookDetail extends Component{
     this.getPageDetail(url)
   }
 
+  componentDidShow(){
+    if (this.state.pageList.length === 0){
+      return;
+    }
+    this.setReadPageIndex();
+  }
+
+  setReadPageIndex(){
+    let marks = Taro.getStorageSync('marks');
+    let index = this.state.markIds.indexOf(this.state.myid);
+    if(index !== -1){
+      const pageIndex= marks[index]['iReadPageIndex'];
+      this.setState({
+        pageIndex,
+        readPageTitle:  this.state.pageList.length === 0 ? '' : (pageIndex === undefined ? pageIndex : this.state.pageList[pageIndex].title)
+      });
+      return pageIndex
+    }
+  }
+
   getPageDetail(url){
     Taro.request({
       url: 'https://www.hew.ac.cn/bg/get_info?detail_url=' + url,
@@ -45,12 +70,14 @@ class BookDetail extends Component{
       success: (res)=>{
         Taro.hideLoading();
         let max_page_num = Math.ceil(res.data.length / 10);
+        let pageIndex = this.setReadPageIndex();
         this.setState({
           pageList: res.data,
           pageSelectList: res.data,
           current_page: 1,
           max_page_num,
-          pageSelectShowList: res.data.slice(0, 10)
+          pageSelectShowList: res.data.slice(0, 10),
+          readPageTitle: pageIndex === undefined ? pageIndex : res.data[pageIndex].title
         })
       }
     })
@@ -88,7 +115,7 @@ class BookDetail extends Component{
     });
   }
 
-  ToReadPage(event){
+  toReadPage(event){
     let id = event.currentTarget.dataset.pageId;
     let index = event.currentTarget.dataset.index;
     let pageList = this.state.pageList;
@@ -109,8 +136,10 @@ class BookDetail extends Component{
         preId = pageList[index - 1].page_id;
       }
     }
+    this.setIdsToRedux();
+    this.setWhereIRead(id);
     Taro.navigateTo({
-      url: '../bookimages/index?id=' + id + '&pre=' + preId + '&next=' + nextId
+      url: '../bookimages/index?id=' + id + '&pre=' + preId + '&next=' + nextId + '&pageIndex=' + this.state.markIds.indexOf(this.state.myid)
     })
   }
 
@@ -123,22 +152,50 @@ class BookDetail extends Component{
     }else{
       nextId = pageList[1].page_id;
     }
+    this.setIdsToRedux();
+    this.setWhereIRead(id);
     Taro.navigateTo({
-      url: '../bookimages/index?id=' + id + '&pre=&next=' + nextId
+      url: '../bookimages/index?id=' + id + '&pre=&next=' + nextId + '&pageIndex=' + this.state.markIds.indexOf(this.state.myid)
     })
+  }
+
+  setWhereIRead(pageId){
+    let marks = Taro.getStorageSync('marks');
+    const markIds = this.state.markIds;
+    const myid = this.state.myid;
+    let index = markIds.indexOf(myid);
+    if(index !== -1){
+      let pageIdIndex = 0;
+      let pageList = this.state.pageList;
+      for(;pageIdIndex < pageList.length; pageIdIndex++){
+        if(pageId === pageList[pageIdIndex].page_id){
+          break;
+        }
+      }
+      marks[index]['iReadPageIndex'] = pageIdIndex;
+      Taro.setStorageSync('marks', marks);
+    }
+  }
+
+  setIdsToRedux(){
+    let pageIds = this.state.pageList.map((item)=>{
+      return item.page_id
+    });
+    let { setPageDetailIds } = this.props;
+    setPageDetailIds(pageIds)
   }
 
   cancelMark(){
     const marks = Taro.getStorageSync('marks');
     const markIds = this.state.markIds;
     const index = markIds.indexOf(this.state.myid);
-    markIds.splice(index, 1)
-    marks.splice(index, 1)
+    markIds.splice(index, 1);
+    marks.splice(index, 1);
     Taro.setStorageSync('marks', marks);
     Taro.setStorageSync('markIds', markIds);
     this.setState({
       markIds: markIds
-    })
+    });
     Taro.showToast({
       title: '取消收藏',
       icon: 'success',
@@ -224,10 +281,7 @@ class BookDetail extends Component{
       <View className='container'>
         <View className='select-page-container clearfix'>
           {
-            // this.state.markIds.indexOf(this.state.myid) === -1 ?
-            //   <Image src={Nomark} className='mark' onClick={this.mark}/>:
-            //   <Image src={ Mark } className='mark' onClick={this.cancelMark}/>
-
+            this.state.readPageTitle ? <Text className='where-i-read'>上次浏览到: {this.state.readPageTitle && this.state.readPageTitle.substring(0, this.state.readPageTitle.length - 11)}</Text> : ''
           }
           <View className='select-page-main' onClick={this.changePageSelect}>
             <Text className='select-page'>选集</Text>
@@ -247,7 +301,7 @@ class BookDetail extends Component{
           {
             this.state.pageSelectShowList.map((item, index)=>{
               return  item === '加载完成' ? <View className='end'>---我是有底线的---</View> :
-                <View dataPageId={item.page_id} onClick={this.ToReadPage} dataIndex={index} className='book-item-one-page' key={index}>
+                <View dataPageId={item.page_id} onClick={this.toReadPage} dataIndex={index} className='book-item-one-page' key={index}>
                   <Image src={this.state.coverUrl} className='book-item-main-image' />
                   <View className='page-info'>
                     <View className='page-num'>
@@ -266,11 +320,11 @@ class BookDetail extends Component{
           }
       </ScrollView>
       <View className='collection' onClick={this.mark}>
-        <Image src={redStar} className='btn-icon'/>
+        <Image src={redStar} className='btn-icon' />
         {this.state.markIds.indexOf(this.state.myid) === -1 ? '我要收藏' : '取消收藏'}
       </View>
       <View className='start-read' onClick={this.beginRead}>
-        <Image src={read} className='btn-icon'/>
+        <Image src={read} className='btn-icon' />
         开始阅读
       </View>
     </View>

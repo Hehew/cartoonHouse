@@ -14,6 +14,11 @@ export default function counter (state = INITIAL_STATE, action) {
         ...state,
         pageDetail: action.value
       }
+    case 'setPageDetailIds':
+        return{
+          ...state,
+          pageDetailIds: action.value
+        }
     default:
       return state
   }

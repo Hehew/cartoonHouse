@@ -12,3 +12,10 @@ export const setPageDetail = (value) => {
     value
   }
 }
+
+export const setPageDetailIds = (value) => {
+  return {
+    type: 'setPageDetailIds',
+    value
+  }
+}

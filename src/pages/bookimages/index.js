@@ -1,10 +1,16 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, ScrollView, Button} from '@tarojs/components'
+import { View, Image, ScrollView} from '@tarojs/components'
 import './index.scss'
+import { connect } from '@tarojs/redux';
 import up from '../../images/icon/up.png'
 import down from '../../images/icon/down.png'
 
-export default class BookImages extends Component{
+@connect((state)=>{
+  return {
+    ...state
+  }
+})
+class BookImages extends Component{
   config = {
     navigationBarTitleText: "阅读",
     onReachBottomDistance: '100'
@@ -15,12 +21,13 @@ export default class BookImages extends Component{
     let preId = this.$router.params.pre;
     let nextId = this.$router.params.next;
     this.setState({
+      id,
       preId,
       nextId
     });
     Taro.showLoading({
       title: '正在加载...',
-    })
+    });
     this.getImageById(id);
   }
   getImageById(id){
@@ -28,8 +35,10 @@ export default class BookImages extends Component{
       url: 'https://www.hew.ac.cn/bg/get_page_detail?id=' + id,
       method: 'get',
       success: (res)=>{
+        this.setPageNum();
         Taro.hideLoading();
         let max_page_num = Math.ceil(res.data.length / 3);
+        this.scrollToTop();
         this.setState({
           imagesList: res.data,
           imagesShowList: res.data.slice(0, 3),
@@ -39,12 +48,43 @@ export default class BookImages extends Component{
       }
     })
   }
+
+  setPageNum(){
+    let id = this.state.id;
+    let ids = this.props.pageslist.pageDetailIds;
+    let index = ids.indexOf(id);
+    let preId;
+    let nextId;
+    if(ids.length === 1){
+      nextId = '';
+      preId = '';
+    }else{
+      if(index === 0){
+        preId = '';
+        nextId = ids[index + 1];
+      }else if (index === ids.length - 1){
+        preId = ids[index - 1];
+        nextId = '';
+      }else{
+        nextId = ids[index + 1];
+        preId = ids[index - 1];
+      }
+    }
+    this.setState({
+      preId,
+      nextId
+    })
+  }
   pre(){
     let id = this.state.preId;
     if(id){
+      this.setWhereIRead(-1);
       Taro.showLoading({
         title: '正在为你跳转上一页',
       });
+      this.setState({
+        id
+      })
       this.getImageById(id);
     }else{
       Taro.showToast({
@@ -58,8 +98,12 @@ export default class BookImages extends Component{
   next(){
     let id = this.state.nextId;
     if(id){
+      this.setWhereIRead(1);
       Taro.showLoading({
-        title: '正在为你跳转上一页',
+        title: '正在为你跳转下一页',
+      });
+      this.setState({
+        id
       });
       this.getImageById(id)
     }else{
@@ -69,6 +113,27 @@ export default class BookImages extends Component{
         duration: 1000
       });
     }
+  }
+
+  setWhereIRead(addparam){
+    let marks = Taro.getStorageSync('marks');
+    const index = this.$router.params.pageIndex;
+    if(index !== -1){
+      marks[index]['iReadPageIndex'] = addparam + marks[index]['iReadPageIndex'];
+      Taro.setStorageSync('marks', marks);
+    }
+  }
+
+  scrollToTop(){
+    this.setState({
+      scrollTop: 0
+    })
+  }
+
+  scrollTopBeBlank(event){
+    this.setState({
+      scrollTop: event.detail.scrollTop
+    })
   }
 
   getMoreImage(){
@@ -102,17 +167,17 @@ export default class BookImages extends Component{
   render(){
     return(
       <View>
-        <ScrollView className='all-image' scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreImage}>
+        <ScrollView className='all-image' onScroll={this.scrollTopBeBlank}  scrollY='true' scrollWithAnimation='true' lowerThreshold='50' scrollTop={this.state.scrollTop} onScrollTolower={this.getMoreImage}>
           {
             this.state.imagesShowList.length !== 0 ? this.state.imagesShowList.map((item, index)=>{
               return item === '内容结束' ? <View className='end'>本话内容结束</View> :
-                <Image mode='widthFix' className='book-detail-image' src={item} key={index}/>
+                <Image mode='widthFix' className='book-detail-image' src={item} key={index} />
 
             }) : <View className='no-data'>暂无数据</View>
           }
         </ScrollView>
         <View className='pre' onClick={this.pre}>
-          <Image src={up} className='btn-icon'/>
+          <Image src={up} className='btn-icon' />
           上一话
         </View>
         <View className='next' onClick={this.next}>
@@ -123,3 +188,5 @@ export default class BookImages extends Component{
     )
   }
 }
+
+export default BookImages
