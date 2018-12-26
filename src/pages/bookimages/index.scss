@@ -19,4 +19,46 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
+.pre{
+  border-radius: 0;
+  line-height: 80px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 375px;
+  background: white;
+  color: #8B8B8B;
+  font-size: 30px;
+  height: 80px;
+  border: none;
+  text-align: center;
+  box-sizing: border-box;
+  border-top: 1px solid #edecee;
+}
+.next{
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 375px;
+  right: 0;
+  background: #e7380c;
+  color: white;
+  font-size: 30px;
+  border-radius: 0;
+  height: 80px;
+  line-height: 80px;
+}
+.btn-icon{
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  vertical-align: -3px;
+}
+.all-image{
+  position: absolute;
+  bottom: 80px;
+  top: 0;
+  left: 0;
+  right: 0;
+}
 

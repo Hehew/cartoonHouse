@@ -24,6 +24,9 @@ class MoreBook extends Component{
       this.setState({
         isIfind: true
       });
+      Taro.showLoading({
+        title: '正在加载...',
+      });
       this.getDataList(keyword, 1);
     }else{
       this.setState({
@@ -40,6 +43,7 @@ class MoreBook extends Component{
       url: 'https://www.hew.ac.cn/bg/search_for_keyword?keyword=' + keyword + '&page_num=' + page_num,
       method: 'get',
       success: (res)=>{
+        Taro.hideLoading();
         this.setState({
           dataList: this.state.dataList.concat(res.data.data),
           page_max_num: res.data.page_max_num || 1,

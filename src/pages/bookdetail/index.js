@@ -3,8 +3,6 @@ import { View, Text, Image, ScrollView, Button} from '@tarojs/components'
 import './index.scss'
 import page_num from '../../images/myimages/page_num.png';
 import select from '../../images/myimages/select.png';
-import Mark from '../../images/icon/mark.png'
-import Nomark from '../../images/icon/nomark.png'
 import { connect } from '@tarojs/redux';
 import redStar from '../../images/icon/red-start.png'
 import read from '../../images/icon/read.png'
@@ -34,6 +32,9 @@ class BookDetail extends Component{
       markIds: Taro.getStorageSync('markIds') || [],
       myid: url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
     });
+    Taro.showLoading({
+      title: '正在加载...',
+    });
     this.getPageDetail(url)
   }
 
@@ -42,6 +43,7 @@ class BookDetail extends Component{
       url: 'https://www.hew.ac.cn/bg/get_info?detail_url=' + url,
       method: 'get',
       success: (res)=>{
+        Taro.hideLoading();
         let max_page_num = Math.ceil(res.data.length / 10);
         this.setState({
           pageList: res.data,
@@ -88,15 +90,41 @@ class BookDetail extends Component{
 
   ToReadPage(event){
     let id = event.currentTarget.dataset.pageId;
+    let index = event.currentTarget.dataset.index;
+    let pageList = this.state.pageList;
+    let preId;
+    let nextId;
+    if(pageList.length === 1){
+      nextId = '';
+      preId = '';
+    }else{
+      if(index === 0){
+        preId = '';
+        nextId = pageList[index + 1].page_id;
+      }else if (index === pageList.length - 1){
+        preId = pageList[index - 1].page_id;
+        nextId = '';
+      }else{
+        nextId = pageList[index + 1].page_id;
+        preId = pageList[index - 1].page_id;
+      }
+    }
     Taro.navigateTo({
-      url: '../bookimages/index?id=' + id
+      url: '../bookimages/index?id=' + id + '&pre=' + preId + '&next=' + nextId
     })
   }
 
   beginRead(){
     let id = this.state.pageSelectList[0].page_id;
+    let pageList = this.state.pageList;
+    let nextId;
+    if(pageList.length === 1){
+      nextId = ''
+    }else{
+      nextId = pageList[1].page_id;
+    }
     Taro.navigateTo({
-      url: '../bookimages/index?id=' + id
+      url: '../bookimages/index?id=' + id + '&pre=&next=' + nextId
     })
   }
 
@@ -219,7 +247,7 @@ class BookDetail extends Component{
           {
             this.state.pageSelectShowList.map((item, index)=>{
               return  item === '加载完成' ? <View className='end'>---我是有底线的---</View> :
-                <View dataPageId={item.page_id} onClick={this.ToReadPage} className='book-item-one-page' key={index}>
+                <View dataPageId={item.page_id} onClick={this.ToReadPage} dataIndex={index} className='book-item-one-page' key={index}>
                   <Image src={this.state.coverUrl} className='book-item-main-image' />
                   <View className='page-info'>
                     <View className='page-num'>
