@@ -71,7 +71,7 @@ class OnlyMe extends Component{
           <Text className='more' onClick={this.toMore}>更多 &gt;</Text>
         </View>
         <View>
-          <Image onClick={this.toDetail} dataCoverUrl={this.state.data[0].imageSrc} dataPageUrl={this.state.data[0].detail_url} src={this.state.data[0].imageSrc} className='image-main' />
+          <Image mode='aspectFill' onClick={this.toDetail} dataCoverUrl={this.state.data[0].imageSrc} dataPageUrl={this.state.data[0].detail_url} src={this.state.data[0].imageSrc} className='image-main' />
           <View style={{paddingLeft: '20rpx', paddingBottom: '10rpx' }}>
             <View>
               <Text className='book-main-title'>{this.state.data[0].title}</Text>

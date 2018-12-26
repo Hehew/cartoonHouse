@@ -26,11 +26,12 @@ page{
 .start-read{
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 375px;
   right: 0;
   background: #e7380c;
   color: white;
   font-size: 30px;
+  border-radius: 0;
 }
 .page-num{
   color: #141414;
@@ -120,4 +121,22 @@ page{
   font-weight: bold;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+.collection{
+  line-height: 80px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 375px;
+  background: white;
+  color: #8B8B8B;
+  font-size: 30px;
+  border-radius: 0;
+  overflow: hidden;
+}
+.btn-icon{
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  vertical-align: -3px;
 }

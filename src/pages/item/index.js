@@ -36,7 +36,7 @@ class BookItem extends Component{
   render(){
     return(
       <View className={this.props.className} style={this.props.className === 'no-margin-left' ? {marginLeft: 0} : {}}>
-        <Image className='book-item-image' src={this.props.imageSrc} dataCoverUrl={this.props.imageSrc} onClick={this.toDetail} />
+        <Image mode='widthFix' className='book-item-image' src={this.props.imageSrc} dataCoverUrl={this.props.imageSrc} onClick={this.toDetail} />
         <View className='book-info'>
           <View>
             <Text className='book-title'>{this.props.bookTitle}</Text>

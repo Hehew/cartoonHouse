@@ -6,6 +6,8 @@ import select from '../../images/myimages/select.png';
 import Mark from '../../images/icon/mark.png'
 import Nomark from '../../images/icon/nomark.png'
 import { connect } from '@tarojs/redux';
+import redStar from '../../images/icon/red-start.png'
+import read from '../../images/icon/read.png'
 
 @connect((state)=>{
   return {
@@ -119,6 +121,10 @@ class BookDetail extends Component{
   }
 
   mark(){
+    if(this.state.markIds.indexOf(this.state.myid) !== -1){
+      this.cancelMark();
+      return;
+    }
     const marks = Taro.getStorageSync('marks');
     const markIds = this.state.markIds;
     if(marks){
@@ -192,9 +198,9 @@ class BookDetail extends Component{
       <View className='container'>
         <View className='select-page-container clearfix'>
           {
-            this.state.markIds.indexOf(this.state.myid) === -1 ?
-              <Image src={Nomark} className='mark' onClick={this.mark}/>:
-              <Image src={ Mark } className='mark' onClick={this.cancelMark}/>
+            // this.state.markIds.indexOf(this.state.myid) === -1 ?
+            //   <Image src={Nomark} className='mark' onClick={this.mark}/>:
+            //   <Image src={ Mark } className='mark' onClick={this.cancelMark}/>
 
           }
           <View className='select-page-main' onClick={this.changePageSelect}>
@@ -214,7 +220,7 @@ class BookDetail extends Component{
         <ScrollView className='all-page' scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreDetail}>
           {
             this.state.pageSelectShowList.map((item, index)=>{
-              return  item === '加载完成' ? <View className='end'>加载完成</View> :
+              return  item === '加载完成' ? <View className='end'>---我是有底线的---</View> :
                 <View dataPageId={item.page_id} onClick={this.ToReadPage} className='book-item-one-page' key={index}>
                   <Image src={this.state.coverUrl} className='book-item-main-image' />
                   <View className='page-info'>
@@ -233,7 +239,12 @@ class BookDetail extends Component{
             })
           }
       </ScrollView>
+      <Button className='collection' onClick={this.mark}>
+        <Image src={redStar} className='btn-icon'/>
+        {this.state.markIds.indexOf(this.state.myid) === -1 ? '我要收藏' : '取消收藏'}
+      </Button>
       <Button className='start-read' onClick={this.beginRead}>
+        <Image src={read} className='btn-icon'/>
         开始阅读
       </Button>
     </View>

@@ -60,7 +60,7 @@ export default class BookImages extends Component{
         {
           this.state.imagesShowList.length !== 0 ? this.state.imagesShowList.map((item, index)=>{
             return item === '内容结束' ? <View className='end'>本话内容结束</View> :
-              <Image className='book-detail-image' src={item} key={index}/>
+              <Image mode='widthFix' className='book-detail-image' src={item} key={index}/>
 
           }) : <View className='no-data'>暂无数据</View>
         }

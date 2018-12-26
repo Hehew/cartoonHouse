@@ -57,7 +57,7 @@ export default class MyCollection extends Component{
         {
           this.state.dataList.length !== 0 ?
             this.state.dataList.map((item, index)=>{
-              return item === '加载完成' ? <View className='end'>加载完成</View> : <BookItem className={index % 3 === 0 ? 'book-item no-margin-left' : 'book-item'}
+              return item === '加载完成' ? <View className='end'>---我是有底线的---</View> : <BookItem className={index % 3 === 0 ? 'book-item no-margin-left' : 'book-item'}
                                imageSrc={item.imageSrc}
                                describes={item.describes && item.describes.slice(0, 3)}
                                bookTitle={item.title && item.title.length > 5 ? item.title.substr(0, 5) + '...' : item.title}
