@@ -16,6 +16,10 @@ class BookImages extends Component{
     onReachBottomDistance: '100'
   }
 
+  state = {
+    scrollTop: 0
+  }
+
   componentWillMount(){
     let id = this.$router.params.id;
     let preId = this.$router.params.pre;
@@ -31,6 +35,9 @@ class BookImages extends Component{
     this.getImageById(id);
   }
   getImageById(id){
+    this.setState({
+      scrollTop: 0
+    })
     Taro.request({
       url: 'https://www.hew.ac.cn/bg/get_page_detail?id=' + id,
       method: 'get',
@@ -38,13 +45,13 @@ class BookImages extends Component{
         this.setPageNum();
         Taro.hideLoading();
         let max_page_num = Math.ceil(res.data.length / 3);
-        this.scrollToTop();
         this.setState({
           imagesList: res.data,
           imagesShowList: res.data.slice(0, 3),
           max_page_num,
-          current_page: 1,
+          current_page: 1
         });
+
       }
     })
   }
@@ -118,24 +125,17 @@ class BookImages extends Component{
   setWhereIRead(addparam){
     let marks = Taro.getStorageSync('marks');
     const index = this.$router.params.pageIndex;
-    if(index !== -1){
+    if(index != -1){
       marks[index]['iReadPageIndex'] = addparam + marks[index]['iReadPageIndex'];
       Taro.setStorageSync('marks', marks);
     }
   }
 
-  scrollToTop(){
-    this.setState({
-      scrollTop: 0
-    })
-  }
-
-  scrollTopBeBlank(event){
-    this.setState({
-      scrollTop: event.detail.scrollTop
-    })
-  }
-
+  // scrollTopBeBlank(event){
+  //   this.setState({
+  //     scrollTop: event.detail.scrollTop
+  //   })
+  // }
   getMoreImage(){
     let current_page = this.state.current_page;
     let page_max_num = this.state.max_page_num;
@@ -167,7 +167,7 @@ class BookImages extends Component{
   render(){
     return(
       <View>
-        <ScrollView className='all-image' onScroll={this.scrollTopBeBlank}  scrollY='true' scrollWithAnimation='true' lowerThreshold='50' scrollTop={this.state.scrollTop} onScrollTolower={this.getMoreImage}>
+        <ScrollView className='all-image' scrollTop={this.state.scrollTop} scrollY='true' scrollWithAnimation='true' lowerThreshold='50'  onScrollTolower={this.getMoreImage}>
           {
             this.state.imagesShowList.length !== 0 ? this.state.imagesShowList.map((item, index)=>{
               return item === '内容结束' ? <View className='end'>本话内容结束</View> :
