@@ -14,6 +14,7 @@ class App extends Component {
 
   config = {
     pages: [
+      'pages/welcome/index',
       'pages/currentweek/index',
       'pages/ifind/index',
       'pages/onlyme/index',
@@ -24,7 +25,7 @@ class App extends Component {
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#405f80',
+      navigationBarBackgroundColor: '#de494b',
       navigationBarTextStyle: 'white'
     },
     tabBar: {
