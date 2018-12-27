@@ -99,7 +99,7 @@ class MoreBook extends Component{
 
   render(){
     return(
-      <View style={{paddingTop: '5rpx',background: '#E3E3E7'}}>
+      <View style={{paddingTop: '5rpx'}}>
         {
           this.state.dataList.length !== 0 ?
           this.state.dataList.map((item, index)=>{
