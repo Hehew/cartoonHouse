@@ -23,7 +23,8 @@ class BookDetail extends Component{
     pageList: [],
     pageSelectList: [],
     pageSelectShowList: [],
-    markIds: []
+    markIds: [],
+    scrollTop: 0
   }
   config = {
     navigationBarTitleText: "详情"
@@ -48,13 +49,14 @@ class BookDetail extends Component{
       return;
     }
     this.setReadPageIndex();
+
   }
 
   setReadPageIndex(){
     let marks = Taro.getStorageSync('marks');
     let index = this.state.markIds.indexOf(this.state.myid);
     if(index !== -1){
-      const pageIndex= marks[index]['iReadPageIndex'];
+      const pageIndex = marks[index]['iReadPageIndex'];
       this.setState({
         pageIndex,
         readPageTitle:  this.state.pageList.length === 0 ? '' : (pageIndex === undefined ? pageIndex : this.state.pageList[pageIndex].title)
@@ -79,6 +81,11 @@ class BookDetail extends Component{
           pageSelectShowList: res.data.slice(0, 10),
           readPageTitle: pageIndex === undefined ? pageIndex : res.data[pageIndex].title
         })
+        if(pageIndex !== undefined && this.state.pageList.length === this.state.pageSelectList.length){
+          this.setState({
+            scrollTop: pageIndex * 85
+          });
+        }
       }
     })
   }
@@ -297,7 +304,7 @@ class BookDetail extends Component{
             }
           </View> : ''
         }
-        <ScrollView className='all-page' scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreDetail}>
+        <ScrollView className='all-page' scrollTop={this.state.scrollTop} scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreDetail}>
           {
             this.state.pageSelectShowList.map((item, index)=>{
               return  item === '加载完成' ? <View className='end'>---我是有底线的---</View> :

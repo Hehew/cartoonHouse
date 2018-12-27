@@ -16,9 +16,6 @@ class BookImages extends Component{
     onReachBottomDistance: '100'
   }
 
-  state = {
-    scrollTop: 0
-  }
 
   componentWillMount(){
     let id = this.$router.params.id;
@@ -35,9 +32,7 @@ class BookImages extends Component{
     this.getImageById(id);
   }
   getImageById(id){
-    this.setState({
-      scrollTop: 0
-    })
+
     Taro.request({
       url: 'https://www.hew.ac.cn/bg/get_page_detail?id=' + id,
       method: 'get',
@@ -45,6 +40,10 @@ class BookImages extends Component{
         this.setPageNum();
         Taro.hideLoading();
         let max_page_num = Math.ceil(res.data.length / 3);
+        Taro.pageScrollTo({
+          scrollTop: 0,
+          duration: 300
+        });
         this.setState({
           imagesList: res.data,
           imagesShowList: res.data.slice(0, 3),
@@ -87,7 +86,7 @@ class BookImages extends Component{
     if(id){
       this.setWhereIRead(-1);
       Taro.showLoading({
-        title: '正在为你跳转上一页',
+        title: '正在跳转上一页',
       });
       this.setState({
         id
@@ -107,7 +106,7 @@ class BookImages extends Component{
     if(id){
       this.setWhereIRead(1);
       Taro.showLoading({
-        title: '正在为你跳转下一页',
+        title: '正在跳转下一页',
       });
       this.setState({
         id
@@ -130,12 +129,6 @@ class BookImages extends Component{
       Taro.setStorageSync('marks', marks);
     }
   }
-
-  // scrollTopBeBlank(event){
-  //   this.setState({
-  //     scrollTop: event.detail.scrollTop
-  //   })
-  // }
   getMoreImage(){
     let current_page = this.state.current_page;
     let page_max_num = this.state.max_page_num;
@@ -164,10 +157,23 @@ class BookImages extends Component{
     }
   }
 
+  onReachBottom(){
+    this.getMoreImage();
+  }
+
   render(){
     return(
       <View>
-        <ScrollView className='all-image' scrollTop={this.state.scrollTop} scrollY='true' scrollWithAnimation='true' lowerThreshold='50'  onScrollTolower={this.getMoreImage}>
+        {/*<ScrollView className='all-image' scrollTop={this.state.scrollTop} scrollY='true' scrollWithAnimation='true' lowerThreshold='50'  onScrollTolower={this.getMoreImage}>*/}
+          {/*{*/}
+            {/*this.state.imagesShowList.length !== 0 ? this.state.imagesShowList.map((item, index)=>{*/}
+              {/*return item === '内容结束' ? <View className='end'>本话内容结束</View> :*/}
+                {/*<Image mode='widthFix' className='book-detail-image' src={item} key={index} />*/}
+
+            {/*}) : <View className='no-data'>暂无数据</View>*/}
+          {/*}*/}
+        {/*</ScrollView>*/}
+        <View className='all-image'>
           {
             this.state.imagesShowList.length !== 0 ? this.state.imagesShowList.map((item, index)=>{
               return item === '内容结束' ? <View className='end'>本话内容结束</View> :
@@ -175,7 +181,7 @@ class BookImages extends Component{
 
             }) : <View className='no-data'>暂无数据</View>
           }
-        </ScrollView>
+        </View>
         <View className='pre' onClick={this.pre}>
           <Image src={up} className='btn-icon' />
           上一话

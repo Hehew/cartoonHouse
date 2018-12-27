@@ -78,6 +78,7 @@ page{
   color: #4b4b4b;
 }
 .select-page-container{
+  position: fixed;
   padding-right: 20px;
   position: relative;
   height: 50px;
@@ -111,6 +112,7 @@ page{
   font-weight: bold;
   padding-top: 10px;
   padding-bottom: 10px;
+
 }
 .collection{
   border-radius: 0;
