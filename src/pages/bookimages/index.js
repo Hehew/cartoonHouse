@@ -86,7 +86,7 @@ class BookImages extends Component{
     if(id){
       this.setWhereIRead(-1);
       Taro.showLoading({
-        title: '正在跳转上一页',
+        title: '正在跳转上一话',
       });
       this.setState({
         id
@@ -94,7 +94,7 @@ class BookImages extends Component{
       this.getImageById(id);
     }else{
       Taro.showToast({
-        title: '已经是第一页了',
+        title: '已经是第一话了',
         icon: 'success',
         duration: 1000
       });

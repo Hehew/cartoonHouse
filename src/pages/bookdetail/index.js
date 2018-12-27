@@ -10,7 +10,8 @@ import { setPageDetailIds } from '../../actions/pages_list'
 
 @connect((state)=>{
   return {
-    ...state
+    ...state,
+    isSetTopScroll: false
   }
 },(dispatch) => ({
   setPageDetailIds: (value)=>{
@@ -80,12 +81,7 @@ class BookDetail extends Component{
           max_page_num,
           pageSelectShowList: res.data.slice(0, 10),
           readPageTitle: pageIndex === undefined ? pageIndex : res.data[pageIndex].title
-        })
-        if(pageIndex !== undefined && this.state.pageList.length === this.state.pageSelectList.length){
-          this.setState({
-            scrollTop: pageIndex * 85
-          });
-        }
+        });
       }
     })
   }
@@ -151,18 +147,41 @@ class BookDetail extends Component{
   }
 
   beginRead(){
-    let id = this.state.pageSelectList[0].page_id;
+    let id;
+    const onPageListIndex = this.state.pageIndex;
     let pageList = this.state.pageList;
-    let nextId;
-    if(pageList.length === 1){
-      nextId = ''
+    let nextId = '';
+    let preId = '';
+    if(onPageListIndex !== undefined){
+      id = pageList[onPageListIndex].page_id;
+      if(onPageListIndex === 0){
+        if (pageList.length === 1){
+          nextId = ''
+        }else{
+          nextId = pageList[onPageListIndex + 1].page_id;
+        }
+      }else if(onPageListIndex === pageList.length - 1){
+        if(pageList.length === 1){
+          preId = ''
+        }else{
+          preId = pageList[onPageListIndex - 1].page_id;
+        }
+      }else{
+        nextId = pageList[onPageListIndex + 1].page_id;
+        preId = pageList[onPageListIndex - 1].page_id;
+      }
     }else{
-      nextId = pageList[1].page_id;
+      id = pageList[0].page_id;
+      if(pageList.length === 1){
+        nextId = ''
+      }else{
+        nextId = pageList[1].page_id;
+      }
     }
     this.setIdsToRedux();
     this.setWhereIRead(id);
     Taro.navigateTo({
-      url: '../bookimages/index?id=' + id + '&pre=&next=' + nextId + '&pageIndex=' + this.state.markIds.indexOf(this.state.myid)
+      url: '../bookimages/index?id=' + id + '&pre=' + preId + '&next=' + nextId + '&pageIndex=' + this.state.markIds.indexOf(this.state.myid)
     })
   }
 
