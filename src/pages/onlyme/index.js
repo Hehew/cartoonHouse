@@ -24,7 +24,7 @@ class OnlyMe extends Component{
   }
 
   state = {
-    data: [{}]
+    data: []
   }
   componentWillMount () {
     this.getOnlyMeData()

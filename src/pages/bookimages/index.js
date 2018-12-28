@@ -32,7 +32,6 @@ class BookImages extends Component{
     this.getImageById(id);
   }
   getImageById(id){
-
     Taro.request({
       url: 'https://www.hew.ac.cn/bg/get_page_detail?id=' + id,
       method: 'get',
@@ -44,6 +43,7 @@ class BookImages extends Component{
           scrollTop: 0,
           duration: 300
         });
+        res.data.push('内容结束');
         this.setState({
           imagesList: res.data,
           imagesShowList: res.data.slice(0, 3),
@@ -145,16 +145,17 @@ class BookImages extends Component{
           current_page: current_page + 1
         })
       }
-    }else{
-      let imagesShowList = this.state.imagesShowList;
-      if(imagesShowList[imagesShowList.length - 1] === '内容结束'){
-        return;
-      }
-      imagesShowList.push('内容结束');
-      this.setState({
-        imagesShowList: imagesShowList
-      })
     }
+    // else{
+    //   let imagesShowList = this.state.imagesShowList;
+    //   if(imagesShowList[imagesShowList.length - 1] === '内容结束'){
+    //     return;
+    //   }
+    //   imagesShowList.push('内容结束');
+    //   this.setState({
+    //     imagesShowList: imagesShowList
+    //   })
+    // }
   }
 
   onReachBottom(){
