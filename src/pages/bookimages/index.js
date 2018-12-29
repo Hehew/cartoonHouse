@@ -14,7 +14,7 @@ class BookImages extends Component{
   config = {
     navigationBarTitleText: "阅读",
     onReachBottomDistance: '100'
-  }
+  };
 
 
   componentWillMount(){
@@ -176,7 +176,7 @@ class BookImages extends Component{
         {/*</ScrollView>*/}
         <View className='all-image'>
           {
-            this.state.imagesShowList.length !== 0 ? this.state.imagesShowList.map((item, index)=>{
+            this.state.imagesShowList.length !== 1 ? this.state.imagesShowList.map((item, index)=>{
               return item === '内容结束' ? <View className='end'>本话内容结束</View> :
                 <Image mode='widthFix' className='book-detail-image' src={item} key={index} />
 
