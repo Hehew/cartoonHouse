@@ -2,67 +2,14 @@ page{
   height: 100%;
   width: 100%;
 }
-.book-bg-image{
-  position: relative;
-  width: 750px;
-  height: 320px;
-  overflow: hidden;
-}
-.bg-image{
-  position: absolute;
-  width: 750px;
-  height: 320px;
-  z-index: -1;
-  filter: blur(15px);
-}
-.all-container{
+.container{
   position: relative;
   height: 100%;
   width: 100%;
 }
-.book-title-info{
-  position: absolute;
-  bottom: 25px;
-  left: 25px;
-  color: black;
-}
-.book-detail-title{
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-.desc-label{
-  font-size: 20px;
-}
-.container{
-  position: relative;
-  float: left;
-  height: calc(100% - 80px);
-  width: 750px;
-}
-.tab-list{
-  display: flex;
-  justify-content: space-around;
-  width: 750px;
-  line-height: 80px;
-  text-align: center;
-  color: black;
-  font-weight: bold;
-  font-size: 25px;
-  border-bottom: 1px solid #fbfbfb;
-}
-.tab{
-  width: 140px;
-}
-.tab-panel{
-  position: absolute;
-  top: 400px;
-  bottom: 0;
-  width: 1500px ;
-}
 .all-page{
   position: absolute;
-  bottom: 0;
+  bottom: 80px;
   top: 50px;
   left: 0;
   right: 0;
@@ -135,7 +82,7 @@ page{
   padding-right: 20px;
   position: relative;
   height: 50px;
-  line-height: 40px;
+  line-height: 50px;
   border-bottom: 2px solid #f4f4f4;
 }
 .select-page{
@@ -165,6 +112,7 @@ page{
   font-weight: bold;
   padding-top: 10px;
   padding-bottom: 10px;
+
 }
 .collection{
   border-radius: 0;

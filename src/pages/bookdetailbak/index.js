@@ -304,78 +304,56 @@ class BookDetail extends Component{
     }
 
     return (
-      <View className='all-container'>
-        <View className='book-bg-image'>
-          <Image src={this.state.coverUrl} mode='aspectFill' className='bg-image' />
-          <View className='book-title-info'>
-            <View className='book-detail-title'>
-              <Text>都市花丛逍遥游</Text>
-            </View>
-            <View className='desc-label'>
-              <Text>热血 | 4077.9万人气</Text>
-            </View>
+      <View className='container'>
+        <View className='select-page-container clearfix'>
+          {
+            this.state.readPageTitle ? <Text className='where-i-read'>上次浏览到: {this.state.readPageTitle && this.state.readPageTitle.substring(0, this.state.readPageTitle.length - 11)}</Text> : ''
+          }
+          <View className='select-page-main' onClick={this.changePageSelect}>
+            <Text className='select-page'>选集</Text>
+            <Image src={select} className='select-image' />
           </View>
         </View>
-        <View className='tab-list'>
-          <View className='tab'>简介</View>
-          <View className='tab'>目录</View>
-        </View>
-        <ScrollView scrollWithAnimation='true' className='tab-panel'>
-          {/*<View className='container'>*/}
-            {/*1111*/}
-          {/*</View>*/}
-          <View className='container'>
-            <View className='select-page-container clearfix'>
-              {
-                this.state.readPageTitle ? <Text className='where-i-read'>上次浏览到: {this.state.readPageTitle && this.state.readPageTitle.substring(0, this.state.readPageTitle.length - 11)}</Text> : ''
-              }
-              <View className='select-page-main' onClick={this.changePageSelect}>
-                <Text className='select-page'>选集</Text>
-                <Image src={select} className='select-image' />
-              </View>
-            </View>
-            { this.state.pageSelect ?
-              <View className='page-all-set'>
-                {
-                  getPageSet().map((item, index)=>{
-                    return <View dataValue={item} className='page-set' key={index} onClick={this.selectPageList}>{item || '全部'}</View>
-                  })
-                }
-              </View> : ''
+        { this.state.pageSelect ?
+          <View className='page-all-set'>
+            {
+              getPageSet().map((item, index)=>{
+                return <View dataValue={item} className='page-set' key={index} onClick={this.selectPageList}>{item || '全部'}</View>
+              })
             }
-            <ScrollView className='all-page' scrollTop={this.state.scrollTop} scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreDetail}>
-              {
-                this.state.pageSelectShowList.map((item, index)=>{
-                  return  item === '加载完成' ? <View className='end'>---我是有底线的---</View> :
-                    <View dataPageId={item.page_id} onClick={this.toReadPage} dataIndex={index} className='book-item-one-page' key={index}>
-                      {/*<Image src={this.state.coverUrl} className='book-item-main-image' />*/}
-                      <View className='page-info'>
-                        <View className='page-num'>
-                          <Text>{item.title && item.title.substring(0, item.title.length -11)}</Text>
-                        </View>
-                        <View className='page-time clearfix'>
-                          <Text className='vt'>{item.title && item.title.substring(item.title.length - 11)}</Text>
-                          <View className='fr like'>
-                            <Image src={page_num} className='little-image vt' />
-                            <Text className='vt'>{item.image_num}</Text>
-                          </View>
-                        </View>
+          </View> : ''
+        }
+        <ScrollView className='all-page' scrollTop={this.state.scrollTop} scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreDetail}>
+          {
+            this.state.pageSelectShowList.map((item, index)=>{
+              return  item === '加载完成' ? <View className='end'>---我是有底线的---</View> :
+                <View dataPageId={item.page_id} onClick={this.toReadPage} dataIndex={index} className='book-item-one-page' key={index}>
+                  {/*<Image src={this.state.coverUrl} className='book-item-main-image' />*/}
+                  <View className='page-info'>
+                    <View className='page-num'>
+                      <Text>{item.title && item.title.substring(0, item.title.length -11)}</Text>
+                    </View>
+                    <View className='page-time clearfix'>
+                      <Text className='vt'>{item.title && item.title.substring(item.title.length - 11)}</Text>
+                      <View className='fr like'>
+                        <Image src={page_num} className='little-image vt' />
+                        <Text className='vt'>{item.image_num}</Text>
                       </View>
                     </View>
-                })
-              }
-            </ScrollView>
-          </View>
-        </ScrollView>
-        <View className='collection' onClick={this.mark}>
-          <Image src={redStar} className='btn-icon' />
-          {this.state.markIds.indexOf(this.state.myid) === -1 ? '我要收藏' : '取消收藏'}
-        </View>
-        <View className='start-read' onClick={this.beginRead}>
-          <Image src={read} className='btn-icon' />
-          开始阅读
-        </View>
+                  </View>
+                </View>
+            })
+          }
+      </ScrollView>
+      <View className='collection' onClick={this.mark}>
+        <Image src={redStar} className='btn-icon' />
+        {this.state.markIds.indexOf(this.state.myid) === -1 ? '我要收藏' : '取消收藏'}
       </View>
+      <View className='start-read' onClick={this.beginRead}>
+        <Image src={read} className='btn-icon' />
+        开始阅读
+      </View>
+    </View>
     )
   }
 }
