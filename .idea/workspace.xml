@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/src/pages/bookdetail/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/bookdetail/index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/ifind/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ifind/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/item/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/item/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/morebook/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/morebook/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -26,8 +25,8 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/bookdetail/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="47" column="7" selection-start-line="47" selection-start-column="7" selection-end-line="47" selection-end-column="7" />
+            <state relative-caret-position="336">
+              <caret line="90" column="71" lean-forward="true" selection-start-line="90" selection-start-column="63" selection-end-line="90" selection-end-column="71" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
               </folding>
@@ -46,8 +45,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pageSelectList</find>
-      <find>nomark</find>
       <find>toDetail</find>
       <find>getMoreDetail</find>
       <find>book-item-image</find>
@@ -76,6 +73,8 @@
       <find>getComments</find>
       <find>hideLoading</find>
       <find>showLoading</find>
+      <find>desc</find>
+      <find>readPageTitle</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -107,13 +106,13 @@
         <option value="$PROJECT_DIR$/src/pages/onlyme/index.js" />
         <option value="$PROJECT_DIR$/src/pages/bookimages/index.scss" />
         <option value="$PROJECT_DIR$/src/pages/bookimages/index.js" />
+        <option value="$PROJECT_DIR$/src/pages/ifind/index.scss" />
+        <option value="$PROJECT_DIR$/src/pages/morebook/index.js" />
+        <option value="$PROJECT_DIR$/src/pages/mycollections/index.scss" />
+        <option value="$PROJECT_DIR$/src/pages/bookdetail/index.scss" />
         <option value="$PROJECT_DIR$/src/app.js" />
         <option value="$PROJECT_DIR$/src/pages/item/index.js" />
         <option value="$PROJECT_DIR$/src/pages/ifind/index.js" />
-        <option value="$PROJECT_DIR$/src/pages/ifind/index.scss" />
-        <option value="$PROJECT_DIR$/src/pages/bookdetail/index.scss" />
-        <option value="$PROJECT_DIR$/src/pages/morebook/index.js" />
-        <option value="$PROJECT_DIR$/src/pages/mycollections/index.scss" />
         <option value="$PROJECT_DIR$/src/pages/bookdetail/index.js" />
       </list>
     </option>
@@ -132,7 +131,7 @@
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1382" />
@@ -168,7 +167,7 @@
               <item name="cartoonHouse" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="mycollections" type="462c0819:PsiDirectoryNode" />
+              <item name="bookdetail" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -246,17 +245,20 @@
       <workItem from="1546168005251" duration="11444000" />
       <workItem from="1546220046489" duration="2055000" />
       <workItem from="1546227863679" duration="4379000" />
-      <workItem from="1546233782943" duration="941000" />
+      <workItem from="1546233782943" duration="2724000" />
+      <workItem from="1546236989104" duration="356000" />
+      <workItem from="1546247344477" duration="999000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="149807000" />
+    <option name="totallyTimeSpent" value="152945000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15848215" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15848215" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50074404" side_tool="true" weight="0.3305785" />
@@ -264,7 +266,7 @@
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49925596" visible="true" weight="0.23966943" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49925596" visible="true" weight="0.23966943" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="TypeScript" order="7" />
@@ -552,13 +554,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.eslintrc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -566,37 +561,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/item/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="627">
-          <caret line="33" column="6" lean-forward="true" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/ifind/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-101">
-          <caret line="29" column="37" lean-forward="true" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/ifind/index.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="893">
           <caret line="47" column="1" selection-start-line="47" selection-start-column="1" selection-end-line="47" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/bookdetail/index.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5586">
-          <caret line="294" column="14" selection-start-line="294" selection-start-column="14" selection-end-line="294" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -627,10 +595,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/bookdetail/index.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4541">
+          <caret line="239" column="23" selection-start-line="239" selection-start-column="23" selection-end-line="239" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/item/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="25" column="33" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/ifind/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-497">
+          <caret line="34" column="93" selection-start-line="34" selection-start-column="93" selection-end-line="34" selection-end-column="93" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/bookdetail/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="47" column="7" selection-start-line="47" selection-start-column="7" selection-end-line="47" selection-end-column="7" />
+        <state relative-caret-position="336">
+          <caret line="90" column="71" lean-forward="true" selection-start-line="90" selection-start-column="63" selection-end-line="90" selection-end-column="71" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
           </folding>

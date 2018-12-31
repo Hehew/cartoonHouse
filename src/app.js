@@ -14,9 +14,9 @@ class App extends Component {
 
   config = {
     pages: [
+      'pages/welcome/index',
       'pages/currentweek/index',
       'pages/bookdetail/index',
-      'pages/welcome/index',
       'pages/ifind/index',
       'pages/onlyme/index',
       'pages/morebook/index',

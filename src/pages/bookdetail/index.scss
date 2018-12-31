@@ -236,11 +236,11 @@ page{
 .desc{
   font-size: 25px;
   width: 700px;
-  display: -webkit-box ;
-  overflow: hidden; /*隐藏溢出的文本  */
-  text-overflow: ellipsis;
   word-break: break-all;/*自动换行*/
-  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  //overflow: hidden; /*隐藏溢出的文本  */
+  //text-overflow: ellipsis;
+  //-webkit-box-orient: vertical;
 }
 .comment{
   border-top: 10px solid #f7f5f8;

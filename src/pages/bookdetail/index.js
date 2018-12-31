@@ -36,10 +36,8 @@ class BookDetail extends Component{
   componentWillMount(){
     let url = this.$router.params.detail_url;
     let coverUrl = this.$router.params.coverUrl;
-    let title = this.$router.params.title;
     this.setState({
       coverUrl,
-      title,
       markIds: Taro.getStorageSync('markIds') || [],
       myid: url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
     });
@@ -65,7 +63,7 @@ class BookDetail extends Component{
       const pageIndex = marks[index]['iReadPageIndex'];
       this.setState({
         pageIndex,
-        readPageTitle:  this.state.pageList.length === 0 ? '' : (pageIndex === undefined ? pageIndex : this.state.pageList[pageIndex].title)
+        readPageTitle:  this.state.pageList.length === 0 ? '' : (pageIndex === undefined ? pageIndex : this.state.pageList && this.state.pageList[pageIndex].title)
       });
       return pageIndex
     }
@@ -76,10 +74,10 @@ class BookDetail extends Component{
       url: 'https://www.hew.ac.cn/bg/get_info?detail_url=' + url,
       method: 'get',
       success: (res)=>{
-
         let max_page_num = Math.ceil(res.data.res.length / 10);
         let pageIndex = this.setReadPageIndex();
         this.setState({
+          title: res.data.title,
           desc: res.data.desc,
           isweeked: res.data.isweeked,
           author: res.data.author,
@@ -90,7 +88,7 @@ class BookDetail extends Component{
           current_page: 1,
           max_page_num,
           pageSelectShowList: res.data.res.slice(0, 10),
-          readPageTitle: pageIndex === undefined ? pageIndex : res.data[pageIndex].title
+          readPageTitle: pageIndex === undefined ? pageIndex : res.data.res[pageIndex].title
         });
       }
     })
@@ -398,7 +396,7 @@ class BookDetail extends Component{
                   <View className='desc-info'>
                     <Text>点击: {this.state.clicknum}</Text>
                   </View>
-                  <View className='desc' style={{height: '100rpx', '-webkit-line-clamp': 3}}>
+                  <View className='desc'>
                     {this.state.desc}
                   </View>
                 </View>
