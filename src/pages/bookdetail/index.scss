@@ -36,6 +36,7 @@ page{
 }
 .container{
   position: relative;
+  overflow: auto;
   float: left;
   height: calc(100% - 80px);
   width: 750px;
@@ -53,13 +54,26 @@ page{
 }
 .tab{
   width: 140px;
+  position: relative;
+}
+.tab.active::after{
+  content: '';
+  position: absolute;
+  width: 100%;
+  background: #f54200;
+  bottom: 0;
+  height: 10px;
+  left: 0;
+  border-radius: 5px;
 }
 .tab-panel{
+  height: auto;
   position: absolute;
   top: 400px;
-  bottom: 0;
-  width: 1500px ;
+  bottom: 0 ;
+  width: 750px;
 }
+
 .all-page{
   position: absolute;
   bottom: 0;
@@ -205,4 +219,79 @@ page{
   font-size: 20px;
   color: #8B8B8B;
   margin-left: 10px;
+}
+.desc-info{
+  font-size: 25px;
+  margin-bottom: 20px;
+  color: #828282;
+}
+.book-sm-img{
+  width: 150px;
+  float: right;
+  margin-bottom: 20px;
+}
+.book-info-detail{
+  padding: 30px 30px 20px;
+}
+.desc{
+  font-size: 25px;
+  width: 700px;
+  display: -webkit-box ;
+  overflow: hidden; /*隐藏溢出的文本  */
+  text-overflow: ellipsis;
+  word-break: break-all;/*自动换行*/
+  -webkit-box-orient: vertical;
+}
+.comment{
+  border-top: 10px solid #f7f5f8;
+}
+.comment-main-title{
+  font-size: 27px;
+  height: 60px;
+  line-height: 60px;
+  padding-left: 20px;
+  border-bottom: 2px solid #e6e6e6;
+}
+.user-face{
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.one-comment{
+  padding: 35px 25px;
+  border-bottom: 2px solid #e6e6e6;
+}
+.one-comment:last-child{
+  border-bottom: none;
+}
+.username{
+  font-size: 25px;
+  margin-left: 20px;
+  vertical-align: middle;
+}
+.comment-time{
+  color: #949494;
+  font-size: 20px;
+  float: right;
+}
+.comment-base-info{
+  line-height: 75px;
+}
+.user-sex{
+  width: 30px;
+  vertical-align: -5px;
+  margin-left: 10px;
+}
+.user-level{
+  width: 50px;
+  margin-left: 10px;
+}
+.comment-desc{
+  font-size: 25px;
+  margin-top: 25px;
+}
+.comments-scroll{
+  height: 100%;
+  width: 100%;
 }

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, ScrollView, Button} from '@tarojs/components'
+import { View, Text, Image, ScrollView, Swiper, SwiperItem} from '@tarojs/components'
 import './index.scss'
 import page_num from '../../images/myimages/page_num.png';
 import select from '../../images/myimages/select.png';
@@ -25,7 +25,9 @@ class BookDetail extends Component{
     pageSelectList: [],
     pageSelectShowList: [],
     markIds: [],
-    scrollTop: 0
+    tabIndex: 0,
+    comment_page_list: [],
+    comment_current_page: 1,
   }
   config = {
     navigationBarTitleText: "详情"
@@ -34,15 +36,18 @@ class BookDetail extends Component{
   componentWillMount(){
     let url = this.$router.params.detail_url;
     let coverUrl = this.$router.params.coverUrl;
+    let title = this.$router.params.title;
     this.setState({
       coverUrl,
+      title,
       markIds: Taro.getStorageSync('markIds') || [],
       myid: url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
     });
     Taro.showLoading({
       title: '正在加载...',
     });
-    this.getPageDetail(url)
+    this.getPageDetail(url);
+    this.getComments(1);
   }
 
   componentDidShow(){
@@ -71,23 +76,62 @@ class BookDetail extends Component{
       url: 'https://www.hew.ac.cn/bg/get_info?detail_url=' + url,
       method: 'get',
       success: (res)=>{
-        Taro.hideLoading();
-        let max_page_num = Math.ceil(res.data.length / 10);
+
+        let max_page_num = Math.ceil(res.data.res.length / 10);
         let pageIndex = this.setReadPageIndex();
         this.setState({
-          pageList: res.data,
-          pageSelectList: res.data,
+          desc: res.data.desc,
+          isweeked: res.data.isweeked,
+          author: res.data.author,
+          clicknum: res.data.clicknum,
+          status: res.data.status,
+          pageList: res.data.res,
+          pageSelectList: res.data.res,
           current_page: 1,
           max_page_num,
-          pageSelectShowList: res.data.slice(0, 10),
+          pageSelectShowList: res.data.res.slice(0, 10),
           readPageTitle: pageIndex === undefined ? pageIndex : res.data[pageIndex].title
         });
       }
     })
   }
 
+  getMoreComments(){
+    if(this.state.comment_current_page < this.state.comment_total_page){
+      this.getComments(this.state.comment_current_page + 1);
+    }else{
+      let dataList = this.state.comment_page_list;
+      if(dataList[dataList.length - 1] === '加载完成'){
+        return;
+      }
+      dataList.push('加载完成');
+      this.setState({
+        comment_page_list: dataList
+      });
+    }
+  }
+
+  getComments(pagenum){
+    let detail_url = this.$router.params.detail_url;
+    const firstIndex = detail_url.lastIndexOf('/') + 1;
+    const lastIndex = detail_url.lastIndexOf('.');
+    const id = detail_url.substring(firstIndex, lastIndex);
+    Taro.request({
+      url: 'https://www.hew.ac.cn/bg/get_page_comments/?id=' + id + '&pagenum=' + pagenum,
+      method: 'get',
+      success: (res)=>{
+        Taro.hideLoading();
+        this.setState({
+          comment_current_page: pagenum,
+          comment_total_page: res.data.total_page,
+          comment_page_list: this.state.comment_page_list.concat(res.data.res)
+        });
+      }
+    })
+  }
+
   selectPageList(event){
-    let item = event.currentTarget.dataset.value
+    let item = event.currentTarget.dataset.value;
     let indexes;
     if(item){
       indexes = item.split('-')
@@ -287,6 +331,22 @@ class BookDetail extends Component{
     }
   }
 
+  changeTab(event){
+    const tabIndex = event.currentTarget.dataset.tabIndex;
+    if(tabIndex != this.state.tabIndex){
+      this.setState({
+        tabIndex
+      });
+    }
+  }
+
+  swiperTab(event){
+    const currentTabIndex = event.detail.current;
+    this.setState({
+      tabIndex: currentTabIndex
+    });
+  }
+
   render() {
     let getPageSet = ()=>{
       let setNum;
@@ -301,7 +361,7 @@ class BookDetail extends Component{
         pageSet.push(i === (setNum -1) ? ((i * 50 + 1) + '-' + length) : ((i * 50 + 1) + '-' + ((i + 1) * 50)))
       }
       return pageSet;
-    }
+    };
 
     return (
       <View className='all-container'>
@@ -309,64 +369,106 @@ class BookDetail extends Component{
           <Image src={this.state.coverUrl} mode='aspectFill' className='bg-image' />
           <View className='book-title-info'>
             <View className='book-detail-title'>
-              <Text>都市花丛逍遥游</Text>
+              <Text>{this.state.title}</Text>
             </View>
             <View className='desc-label'>
-              <Text>热血 | 4077.9万人气</Text>
+              <Text>热血 | {this.state.clicknum}人气</Text>
             </View>
           </View>
         </View>
         <View className='tab-list'>
-          <View className='tab'>简介</View>
-          <View className='tab'>目录</View>
+          <View className={this.state.tabIndex == '0' ? 'tab active': 'tab'} dataTabIndex='0' onClick={this.changeTab}>简介</View>
+          <View className={this.state.tabIndex == '1' ? 'tab active': 'tab'} dataTabIndex='1' onClick={this.changeTab}>目录</View>
         </View>
-        <ScrollView scrollWithAnimation='true' className='tab-panel'>
-          {/*<View className='container'>*/}
-            {/*1111*/}
-          {/*</View>*/}
-          <View className='container'>
-            <View className='select-page-container clearfix'>
-              {
-                this.state.readPageTitle ? <Text className='where-i-read'>上次浏览到: {this.state.readPageTitle && this.state.readPageTitle.substring(0, this.state.readPageTitle.length - 11)}</Text> : ''
-              }
-              <View className='select-page-main' onClick={this.changePageSelect}>
-                <Text className='select-page'>选集</Text>
-                <Image src={select} className='select-image' />
-              </View>
-            </View>
-            { this.state.pageSelect ?
-              <View className='page-all-set'>
-                {
-                  getPageSet().map((item, index)=>{
-                    return <View dataValue={item} className='page-set' key={index} onClick={this.selectPageList}>{item || '全部'}</View>
-                  })
-                }
-              </View> : ''
-            }
-            <ScrollView className='all-page' scrollTop={this.state.scrollTop} scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreDetail}>
-              {
-                this.state.pageSelectShowList.map((item, index)=>{
-                  return  item === '加载完成' ? <View className='end'>---我是有底线的---</View> :
-                    <View dataPageId={item.page_id} onClick={this.toReadPage} dataIndex={index} className='book-item-one-page' key={index}>
-                      {/*<Image src={this.state.coverUrl} className='book-item-main-image' />*/}
-                      <View className='page-info'>
-                        <View className='page-num'>
-                          <Text>{item.title && item.title.substring(0, item.title.length -11)}</Text>
+        <Swiper className='tab-panel' current={this.state.tabIndex} duration='300'  onChange={this.swiperTab}>
+          <SwiperItem>
+            <View className='container'>
+              <ScrollView className='comments-scroll' scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreComments}>
+                <View className='book-info-detail'>
+                  <Image src={this.state.coverUrl} mode='widthFix' className='book-sm-img' />
+                  <View className='desc-info'>
+                    <Text>作者: {this.state.author}</Text>
+                  </View>
+                  <View className='desc-info'>
+                    <Text>状态: {this.state.status}</Text>
+                  </View>
+                  <View className='desc-info'>
+                    <Text>周更: {this.state.isweeked ? '是' : '否'}</Text>
+                  </View>
+                  <View className='desc-info'>
+                    <Text>点击: {this.state.clicknum}</Text>
+                  </View>
+                  <View className='desc' style={{height: '100rpx', '-webkit-line-clamp': 3}}>
+                    {this.state.desc}
+                  </View>
+                </View>
+                <View className='comment'>
+                  <View className='comment-main-title'>精彩点评</View>
+                  {
+                    this.state.comment_page_list.map((value, index)=>{
+                      return value === '加载完成' ? <View className='end'>---我是有底线的---</View> : <View className='one-comment' key={index}>
+                        <View className='comment-base-info'>
+                          <Image className='user-face' src={value.user_face} />
+                          <Text className='username'>{value.username}</Text>
+                          {value.sex ? <Image className='user-sex' mode='widthFix' src={value.sex} /> : ''}
+                          {value.level ? <Image className='user-level' mode='widthFix' src={value.level} /> : ''}
+                          <Text className='comment-time'>{value.time}</Text>
                         </View>
-                        <View className='page-time clearfix'>
-                          <Text className='vt'>{item.title && item.title.substring(item.title.length - 11)}</Text>
-                          <View className='fr like'>
-                            <Image src={page_num} className='little-image vt' />
-                            <Text className='vt'>{item.image_num}</Text>
+                        <View className='comment-desc'>
+                          {value.comment}
+                        </View>
+                      </View>
+                    })
+                  }
+                </View>
+              </ScrollView>
+            </View>
+          </SwiperItem>
+          <SwiperItem>
+            <View className='container'>
+              <View className='select-page-container clearfix'>
+                {
+                  this.state.readPageTitle ? <Text className='where-i-read'>上次浏览到: {this.state.readPageTitle && this.state.readPageTitle.substring(0, this.state.readPageTitle.length - 11)}</Text> : ''
+                }
+                <View className='select-page-main' onClick={this.changePageSelect}>
+                  <Text className='select-page'>选集</Text>
+                  <Image src={select} className='select-image' />
+                </View>
+              </View>
+              { this.state.pageSelect ?
+                <View className='page-all-set'>
+                  {
+                    getPageSet().map((item, index)=>{
+                      return <View dataValue={item} className='page-set' key={index} onClick={this.selectPageList}>{item || '全部'}</View>
+                    })
+                  }
+                </View> : ''
+              }
+              <ScrollView className='all-page' scrollY='true' lowerThreshold='50' onScrollTolower={this.getMoreDetail}>
+                {
+                  this.state.pageSelectShowList.map((item, index)=>{
+                    return  item === '加载完成' ? <View className='end'>---我是有底线的---</View> :
+                      <View dataPageId={item.page_id} onClick={this.toReadPage} dataIndex={index} className='book-item-one-page' key={index}>
+                        {/*<Image src={this.state.coverUrl} className='book-item-main-image' />*/}
+                        <View className='page-info'>
+                          <View className='page-num'>
+                            <Text>{item.title && item.title.substring(0, item.title.length -11)}</Text>
+                          </View>
+                          <View className='page-time clearfix'>
+                            <Text className='vt'>{item.title && item.title.substring(item.title.length - 11)}</Text>
+                            <View className='fr like'>
+                              <Image src={page_num} className='little-image vt' />
+                              <Text className='vt'>{item.image_num}</Text>
+                            </View>
                           </View>
                         </View>
                       </View>
-                    </View>
-                })
-              }
-            </ScrollView>
-          </View>
-        </ScrollView>
+                  })
+                }
+              </ScrollView>
+            </View>
+          </SwiperItem>
+        </Swiper>
         <View className='collection' onClick={this.mark}>
           <Image src={redStar} className='btn-icon' />
           {this.state.markIds.indexOf(this.state.myid) === -1 ? '我要收藏' : '取消收藏'}

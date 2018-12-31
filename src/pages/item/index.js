@@ -30,7 +30,7 @@ class BookItem extends Component{
     }
     setPageDetail(item);
     Taro.navigateTo({
-      url: '../bookdetail/index?detail_url=' + this.props.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl
+      url: '../bookdetail/index?detail_url=' + this.props.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl + '&title=' + this.props.bookTitle
     })
   }
   render(){

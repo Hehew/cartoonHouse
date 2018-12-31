@@ -32,7 +32,7 @@ class Ifind extends Component{
     item.describes = item.label.split('/');
     setPageDetail(item);
     Taro.navigateTo({
-      url: '../bookdetail/index?detail_url=' + item.detail_url + '&coverUrl=' + item.imageSrc
+      url: '../bookdetail/index?detail_url=' + item.detail_url + '&coverUrl=' + item.imageSrc + '&title=' + item.title
     })
   }
 

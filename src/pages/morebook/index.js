@@ -66,7 +66,7 @@ class MoreBook extends Component{
         dataList.push('加载完成');
         this.setState({
           dataList: dataList
-        })
+        });
       }
     }else{
       let current_page = this.state.current_page;
