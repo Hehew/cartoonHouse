@@ -43,6 +43,9 @@ class BookImages extends Component{
           scrollTop: 0,
           duration: 300
         });
+        if(res.data === '连接超时请检查你的网络!'){
+          res.data = [];
+        }
         res.data.push('内容结束');
         this.setState({
           imagesList: res.data,
@@ -180,7 +183,7 @@ class BookImages extends Component{
               return item === '内容结束' ? <View className='end'>本话内容结束</View> :
                 <Image mode='widthFix' className='book-detail-image' src={item} key={index} />
 
-            }) : <View className='no-data'>暂无数据</View>
+            }) : <View className='no-data'>收费内容暂无数据</View>
           }
         </View>
         <View className='pre' onClick={this.pre}>

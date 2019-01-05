@@ -27,10 +27,11 @@ class BookItem extends Component{
       imageSrc: this.props.imageSrc,
       describes: this.props.describes,
       detail_url: this.props.pageUrl
-    }
+    };
+    const label = this.props.describes[0];
     setPageDetail(item);
     Taro.navigateTo({
-      url: '../bookdetail/index?detail_url=' + this.props.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl
+      url: '../bookdetail/index?detail_url=' + this.props.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl + '&label=' + label
     })
   }
   render(){

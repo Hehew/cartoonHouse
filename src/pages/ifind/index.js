@@ -30,9 +30,10 @@ class Ifind extends Component{
     let {setPageDetail} = this.props;
     let item = event.currentTarget.dataset.item;
     item.describes = item.label.split('/');
+    const label = item.describes[0]
     setPageDetail(item);
     Taro.navigateTo({
-      url: '../bookdetail/index?detail_url=' + item.detail_url + '&coverUrl=' + item.imageSrc
+      url: '../bookdetail/index?detail_url=' + item.detail_url + '&coverUrl=' + item.imageSrc + '&label=' + label
     })
   }
 

@@ -41,19 +41,19 @@ class OnlyMe extends Component{
     })
   }
 
-  toDetail(event){
-    let {setPageDetail} = this.props;
-    let item = {
-      title: this.state.data[0].title,
-      imageSrc: this.state.data[0].imageSrc,
-      describes: this.state.data[0].label.split('/'),
-      detail_url: this.state.data[0].detail_url
-    }
-    setPageDetail(item);
-    Taro.navigateTo({
-      url: '../bookdetail/index?detail_url=' + event.currentTarget.dataset.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl
-    })
-  }
+  // toDetail(event){
+  //   let {setPageDetail} = this.props;
+  //   let item = {
+  //     title: this.state.data[0].title,
+  //     imageSrc: this.state.data[0].imageSrc,
+  //     describes: this.state.data[0].label.split('/'),
+  //     detail_url: this.state.data[0].detail_url
+  //   }
+  //   setPageDetail(item);
+  //   Taro.navigateTo({
+  //     url: '../bookdetail/index?detail_url=' + event.currentTarget.dataset.pageUrl + '&coverUrl=' + event.currentTarget.dataset.coverUrl
+  //   })
+  // }
 
   toMore(){
     let { replace } = this.props;

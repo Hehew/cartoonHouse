@@ -370,7 +370,7 @@ class BookDetail extends Component{
               <Text>{this.state.title}</Text>
             </View>
             <View className='desc-label'>
-              <Text>热血 | {this.state.clicknum}人气</Text>
+              <Text>{this.$router.params.label} | {this.state.clicknum}人气</Text>
             </View>
           </View>
         </View>
