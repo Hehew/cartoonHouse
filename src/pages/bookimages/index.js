@@ -38,7 +38,7 @@ class BookImages extends Component{
       success: (res)=>{
         this.setPageNum();
         Taro.hideLoading();
-        let max_page_num = Math.ceil(res.data.length / 3);
+        let max_page_num = Math.ceil(res.data.length / 5);
         Taro.pageScrollTo({
           scrollTop: 0,
           duration: 300
@@ -49,7 +49,7 @@ class BookImages extends Component{
         res.data.push('内容结束');
         this.setState({
           imagesList: res.data,
-          imagesShowList: res.data.slice(0, 3),
+          imagesShowList: res.data.slice(0, 5),
           max_page_num,
           current_page: 1
         });
@@ -139,12 +139,12 @@ class BookImages extends Component{
     if(current_page < page_max_num){
       if(current_page === page_max_num - 1){
         this.setState({
-          imagesShowList: this.state.imagesShowList.concat(this.state.imagesList.slice(current_page * 3, length)),
+          imagesShowList: this.state.imagesShowList.concat(this.state.imagesList.slice(current_page * 5, length)),
           current_page: current_page + 1
         })
       }else{
         this.setState({
-          imagesShowList: this.state.imagesShowList.concat(this.state.imagesList.slice(current_page * 3, current_page * 3 + 3)),
+          imagesShowList: this.state.imagesShowList.concat(this.state.imagesList.slice(current_page * 5, current_page * 5 + 5)),
           current_page: current_page + 1
         })
       }
